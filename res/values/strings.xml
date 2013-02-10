@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Sleep Tracker</string>
+    <string name="menu_settings">Settings</string>
+    <string name="go_to_sleep">Go To Sleep</string>
+    <string name="wake_up">Wake Up</string>
+    <string name="edit_data">Edit Data</string>
+    <string name="status">Status:</string>
+
+</resources>
