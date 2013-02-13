@@ -2,6 +2,7 @@ package com.cis350.sleeptracker;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
@@ -10,6 +11,8 @@ public class MainActivity extends Activity {
 	private static final String AWAKE = "AWAKE";
 	private static final String ASLEEP = "ASLEEP";
 	private TextView mStatus;
+	private SleepLogHelper mSleepLogHelper;
+	private long mRecentSleepTime;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +21,7 @@ public class MainActivity extends Activity {
 		
 		mStatus = (TextView) findViewById(R.id.status);
 		mStatus.setText(getResources().getString(R.string.status) + " " + AWAKE);
+		mSleepLogHelper = new SleepLogHelper(this);
 	}
 
 	@Override
@@ -29,9 +33,17 @@ public class MainActivity extends Activity {
 
 	public void onClickWake(View view) {
 		mStatus.setText(getResources().getString(R.string.status) + " " + AWAKE);
+		mSleepLogHelper.updateAwakeTime(mRecentSleepTime, System.currentTimeMillis());
 	}
 	
 	public void onClickSleep(View view) {
 		mStatus.setText(getResources().getString(R.string.status) + " " + ASLEEP);
+		mRecentSleepTime = System.currentTimeMillis();
+		mSleepLogHelper.insertLog(mRecentSleepTime);
+	}
+	
+	public void onClickData(View view) {
+		Intent intent = new Intent(this, DataActivity.class);
+		startActivity(intent);
 	}
 }
