@@ -23,6 +23,9 @@
             </intent-filter>
         </activity>
         <activity android:name="com.cis350.sleeptracker.DataActivity" />
+        <activity android:name="com.cis350.sleeptracker.LogActivity" />
+        <activity android:name="com.cis350.sleeptracker.ModifyTimeActivity"
+            android:theme="@android:style/Theme.Dialog" />
     </application>
 
 </manifest>

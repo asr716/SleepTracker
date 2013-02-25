@@ -63,6 +63,13 @@ public class SleepLogHelper {
 		return (mDb.insert(TABLE_NAME, null, values) > 0);
 	}
 	
+	public boolean updateAsleepTime(long asleepTime, long newAsleepTime) {
+		ContentValues values = new ContentValues();
+		values.put(ASLEEP_TIME, newAsleepTime);
+		String whereClause = ASLEEP_TIME + "=" + asleepTime;
+		return (mDb.update(TABLE_NAME, values, whereClause, null) > 0);
+	}
+	
 	public boolean updateAwakeTime(long asleepTime, long awakeTime) {
 		ContentValues values = new ContentValues();
 		values.put(AWAKE_TIME, awakeTime);
@@ -70,8 +77,26 @@ public class SleepLogHelper {
 		return (mDb.update(TABLE_NAME, values, whereClause, null) > 0);
 	}
 	
+	public boolean updateRating(long asleepTime, int rating) {
+		ContentValues values = new ContentValues();
+		values.put(RATING, rating);
+		String whereClause = ASLEEP_TIME + "=" + asleepTime;
+		return (mDb.update(TABLE_NAME, values, whereClause, null) > 0);
+	}
+	
+	public boolean updateComments(long asleepTime, String comments) {
+		ContentValues values = new ContentValues();
+		values.put(COMMENTS, comments);
+		String whereClause = ASLEEP_TIME + "=" + asleepTime;
+		return (mDb.update(TABLE_NAME, values, whereClause, null) > 0);
+	}
+	
 	public Cursor queryAll() {
-		Cursor cursor = mDb.query(TABLE_NAME, COLUMNS, null, null, null, null, null);
-		return cursor;
+		return mDb.query(TABLE_NAME, COLUMNS, null, null, null, null, null);
+	}
+	
+	public Cursor queryLog(long asleepTime) {
+		String selection = ASLEEP_TIME + "=" + asleepTime;
+		return mDb.query(TABLE_NAME, COLUMNS, selection, null, null, null, null);
 	}
 }
