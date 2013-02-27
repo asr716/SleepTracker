@@ -57,4 +57,9 @@ public class ModifyTimeActivity extends Activity {
 		}
 		finish();
 	}
+	
+	// For testing purposes
+	public void setIsSleepTime(boolean b) {
+		isSleepTime = b;
+	}
 }
