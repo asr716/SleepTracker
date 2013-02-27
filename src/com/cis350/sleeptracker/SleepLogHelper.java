@@ -99,4 +99,8 @@ public class SleepLogHelper {
 		String selection = ASLEEP_TIME + "=" + asleepTime;
 		return mDb.query(TABLE_NAME, COLUMNS, selection, null, null, null, null);
 	}
+	
+	public boolean deleteAllEntries() {
+		return (mDb.delete(TABLE_NAME, null, null) > 0);
+	}
 }
