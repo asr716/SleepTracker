@@ -33,46 +33,46 @@ public class LogActivity extends Activity {
 		mSimpleDateFormat = new SimpleDateFormat("MMM dd hh:mm a", Locale.US);
 		mRatingBar = (RatingBar) findViewById(R.id.rating_bar);
 		mCommentBox = (EditText) findViewById(R.id.comment_box);
-	}
-	
-	@Override
-	protected void onResume() {
-		super.onResume();
+		
 		Cursor cursor = mSleepLogHelper.queryLog(mAsleepTime);
 		if (cursor != null) {
 			cursor.moveToFirst();
-			String fAsleepTime = mSimpleDateFormat.format(new Date(mAsleepTime));
 			mAwakeTime = cursor.getLong(cursor.getColumnIndex(SleepLogHelper.AWAKE_TIME));
-			String fAwakeTime = "-";
-			if (mAwakeTime != 0) {
-				fAwakeTime = mSimpleDateFormat.format(new Date(mAwakeTime));
-			}
 			int rating = cursor.getInt(cursor.getColumnIndex(SleepLogHelper.RATING));
 			String comments = cursor.getString(cursor.getColumnIndex(SleepLogHelper.COMMENTS));
-			long elapsedTime = mAwakeTime - mAsleepTime;
-			String totalSleep = String.format(Locale.US, "%d hours, %d minutes",
-					TimeUnit.MILLISECONDS.toHours(elapsedTime),
-					TimeUnit.MILLISECONDS.toMinutes(elapsedTime) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(elapsedTime)));
-			if (elapsedTime < 0) {
-				totalSleep = getResources().getString(R.string.pending);
-			}
-			
-			TextView totalSleepText = (TextView) findViewById(R.id.total_sleep);
-			totalSleepText.setText(totalSleep);
-			TextView asleepText = (TextView) findViewById(R.id.asleep_time);
-			asleepText.setText(fAsleepTime);
-			TextView awakeText = (TextView) findViewById(R.id.awake_time);
-			awakeText.setText(fAwakeTime);
 			mRatingBar.setRating(rating);
 			mCommentBox.setText(comments);
 		}
 	}
 	
 	@Override
-	protected void onStop() {
-		super.onStop();
+	protected void onResume() {
+		super.onResume();
+		String fAsleepTime = mSimpleDateFormat.format(new Date(mAsleepTime));
+		String fAwakeTime = "-";
+		if (mAwakeTime != 0) {
+			fAwakeTime = mSimpleDateFormat.format(new Date(mAwakeTime));
+		}
+		long elapsedTime = mAwakeTime - mAsleepTime;
+		String totalSleep = String.format(Locale.US, "%d hours, %d minutes",
+				TimeUnit.MILLISECONDS.toHours(elapsedTime),
+				TimeUnit.MILLISECONDS.toMinutes(elapsedTime) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(elapsedTime)));
+		if (elapsedTime < 0) {
+			totalSleep = getResources().getString(R.string.pending);
+		}
+		
+		TextView totalSleepText = (TextView) findViewById(R.id.total_sleep);
+		totalSleepText.setText(totalSleep);
+		TextView asleepText = (TextView) findViewById(R.id.asleep_time);
+		asleepText.setText(fAsleepTime);
+		TextView awakeText = (TextView) findViewById(R.id.awake_time);
+		awakeText.setText(fAwakeTime);
+	}
+	
+	public void onClickSave(View view) {
 		mSleepLogHelper.updateRating(mAsleepTime, (int) mRatingBar.getRating());
 		mSleepLogHelper.updateComments(mAsleepTime, mCommentBox.getText().toString());
+		finish();
 	}
 	
 	public void onClickEditSleep(View view) {
@@ -85,13 +85,15 @@ public class LogActivity extends Activity {
 		Intent intent = new Intent(this, ModifyTimeActivity.class);
 		intent.putExtra(SleepLogHelper.ASLEEP_TIME, mAsleepTime);
 		intent.putExtra(SleepLogHelper.AWAKE_TIME, mAwakeTime);
-		startActivity(intent);
+		startActivityForResult(intent, 2);
 	}
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == 1 && resultCode == RESULT_OK) {
-			mAsleepTime = data.getLongExtra(ModifyTimeActivity.NEW_ASLEEP_TIME, mAsleepTime);
+			mAsleepTime = data.getLongExtra(SleepLogHelper.ASLEEP_TIME, mAsleepTime);
+		} else if (requestCode == 2 && resultCode == RESULT_OK) {
+			mAwakeTime = data.getLongExtra(SleepLogHelper.AWAKE_TIME, mAwakeTime);
 		}
 	}
 }
