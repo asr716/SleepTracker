@@ -6,7 +6,7 @@
     
     <string name="go_to_sleep">Go To Sleep</string>
     <string name="wake_up">Wake Up</string>
-    <string name="edit_data">Edit Data</string>
+    <string name="view_data">View Data</string>
     <string name="status">Status:</string>
     
     <string name="sleep">SLEEP</string>

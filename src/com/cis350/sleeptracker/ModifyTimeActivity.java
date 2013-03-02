@@ -12,12 +12,10 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 public class ModifyTimeActivity extends Activity {
-	public static final String NEW_ASLEEP_TIME = "new_asleep_time";
-	
 	private TimePicker mTimePicker;
 	private DatePicker mDatePicker;
 	private SleepLogHelper mSleepLogHelper;
-	private boolean isSleepTime;
+	private boolean mIsSleepTime;
 	private long mAsleepTime;
 	
 	@Override
@@ -29,11 +27,11 @@ public class ModifyTimeActivity extends Activity {
 		mTimePicker = (TimePicker) findViewById(R.id.time_picker);
 		mDatePicker = (DatePicker) findViewById(R.id.date_picker);
 		mSleepLogHelper = new SleepLogHelper(this);
-		isSleepTime = false;
+		mIsSleepTime = false;
 		mAsleepTime = getIntent().getLongExtra(SleepLogHelper.ASLEEP_TIME, 0);
 		long originalTime = getIntent().getLongExtra(SleepLogHelper.AWAKE_TIME, -1);
 		if (originalTime == -1) {
-			isSleepTime = true;
+			mIsSleepTime = true;
 			originalTime = mAsleepTime;
 		}
 		GregorianCalendar cal = new GregorianCalendar();
@@ -47,19 +45,22 @@ public class ModifyTimeActivity extends Activity {
 		GregorianCalendar cal = new GregorianCalendar(mDatePicker.getYear(), mDatePicker.getMonth(),
 				mDatePicker.getDayOfMonth(), mTimePicker.getCurrentHour(), mTimePicker.getCurrentMinute());
 		long time = cal.getTimeInMillis();
-		if (isSleepTime) {
+		if (mIsSleepTime) {
 			mSleepLogHelper.updateAsleepTime(mAsleepTime, time);
 			Intent intent = new Intent();
-			intent.putExtra(NEW_ASLEEP_TIME, time);
+			intent.putExtra(SleepLogHelper.ASLEEP_TIME, time);
 			setResult(RESULT_OK, intent);
 		} else {
 			mSleepLogHelper.updateAwakeTime(mAsleepTime, time);
+			Intent intent = new Intent();
+			intent.putExtra(SleepLogHelper.AWAKE_TIME, time);
+			setResult(RESULT_OK, intent);
 		}
 		finish();
 	}
 	
 	// For testing purposes
 	public void setIsSleepTime(boolean b) {
-		isSleepTime = b;
+		mIsSleepTime = b;
 	}
 }

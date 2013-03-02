@@ -3,33 +3,36 @@
     android:orientation="vertical" 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/amber"
+    android:padding="20dip"
     tools:context=".MainActivity" >
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    	xmlns:tools="http://schemas.android.com/tools"
-    	android:orientation="horizontal" 
-    	android:layout_width="match_parent"
-    	android:layout_height="wrap_content"
-    	android:gravity="center" >
-	    <Button
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/go_to_sleep"
-	        android:onClick="onClickSleep" />  
-	    <Button
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/wake_up"
-	        android:onClick="onClickWake" />   
-	    <Button
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/edit_data"
-	        android:onClick="onClickData" />
-    </LinearLayout>
     <TextView
         android:id="@+id/status"
         android:layout_width="match_parent"
-	    android:layout_height="match_parent"
+	    android:layout_height="wrap_content"
 	    android:gravity="center"
-	    android:textSize="20sp" />
+	    android:layout_weight="1"
+	    android:textSize="40sp"
+	    android:textColor="@color/off_white" />
+    <Button
+        android:id="@+id/sleep_wake_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="32"
+        android:layout_marginTop="20dip"
+        android:text="@string/go_to_sleep"
+        android:textSize="40sp"
+        android:textColor="@color/off_white"
+        android:onClick="onClickSleepOrWake" />  
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:layout_marginTop="20dip"
+        android:text="@string/view_data"
+        android:textSize="40sp"
+        android:textColor="@color/off_white"
+        android:onClick="onClickData" />
 </LinearLayout>

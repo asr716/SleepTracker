@@ -57,9 +57,10 @@ public class SleepLogHelper {
 		mDbHelper.close();
 	}
 	
-	public boolean insertLog(long asleepTime) {
+	public boolean insertLog(long asleepTime, long awakeTime) {
 		ContentValues values = new ContentValues();
 		values.put(ASLEEP_TIME, asleepTime);
+		values.put(AWAKE_TIME, awakeTime);
 		return (mDb.insert(TABLE_NAME, null, values) > 0);
 	}
 	

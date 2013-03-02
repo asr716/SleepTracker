@@ -9,12 +9,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
 	private static final String AWAKE = "AWAKE";
 	private static final String ASLEEP = "ASLEEP";
+	private boolean mIsAsleep;
 	private TextView mStatus;
+	private Button mSleepWakeButton;
 	private SleepLogHelper mSleepLogHelper;
 	private long mRecentSleepTime;
 	private Context context;
@@ -25,9 +28,13 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		mIsAsleep = false;
+		mSleepWakeButton = (Button) findViewById(R.id.sleep_wake_button);
+		mSleepWakeButton.setText(getResources().getString(R.string.go_to_sleep));
 		mStatus = (TextView) findViewById(R.id.status);
 		mStatus.setText(getResources().getString(R.string.status) + " " + AWAKE);
 		mSleepLogHelper = new SleepLogHelper(this);
+		//mSleepLogHelper.deleteAllEntries();
 		context = this;
 	}
 
@@ -38,39 +45,43 @@ public class MainActivity extends Activity {
 		return true;
 		
 	}
-
-	public void onClickWake(View view) {
-		mStatus.setText(getResources().getString(R.string.status) + " " + AWAKE);
-		mSleepLogHelper.updateAwakeTime(mRecentSleepTime, System.currentTimeMillis());
-		podcastPlayer.release();
-	}
 	
-	public void onClickSleep(View view) {
-		mStatus.setText(getResources().getString(R.string.status) + " " + ASLEEP);
-		mRecentSleepTime = System.currentTimeMillis();
-		mSleepLogHelper.insertLog(mRecentSleepTime);
-		
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-		
-		alertDialogBuilder.setTitle("Podcast");
-		alertDialogBuilder.setMessage("Would you like to listen to the Podcast?");
-		alertDialogBuilder.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog,int id) {
-				// if this button is clicked play podcast
-				podcastPlayer = MediaPlayer.create(context, R.raw.podcast_file);
-				podcastPlayer.start();
-				dialog.dismiss();
+	public void onClickSleepOrWake(View view) {
+		if (!mIsAsleep) {
+			mIsAsleep = true;
+			mSleepWakeButton.setText(getResources().getString(R.string.wake_up));
+			mStatus.setText(getResources().getString(R.string.status) + " " + ASLEEP);
+			mRecentSleepTime = System.currentTimeMillis();
+			
+			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+			alertDialogBuilder.setTitle("Podcast");
+			alertDialogBuilder.setMessage("Would you like to listen to the Podcast?");
+			alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					// if this button is clicked play podcast
+					podcastPlayer = MediaPlayer.create(context, R.raw.shs_podcast);
+					podcastPlayer.start();
+					dialog.dismiss();
+				}
+			});
+			alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog,int id) {
+					// if this button is clicked, just close
+					// the dialog box and do nothing
+					dialog.cancel();
+				}
+			});
+			AlertDialog alertDialog = alertDialogBuilder.create();
+			alertDialog.show();
+		} else {
+			mIsAsleep = false;
+			mSleepWakeButton.setText(getResources().getString(R.string.go_to_sleep));
+			mStatus.setText(getResources().getString(R.string.status) + " " + AWAKE);
+			mSleepLogHelper.insertLog(mRecentSleepTime, System.currentTimeMillis());
+			if (podcastPlayer != null) {
+				podcastPlayer.release();
 			}
-		});
-		alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog,int id) {
-				// if this button is clicked, just close
-				// the dialog box and do nothing
-				dialog.cancel();
-			}
-		});
-		AlertDialog alertDialog = alertDialogBuilder.create();
-		alertDialog.show();
+		}
 	}
 	
 	public void onClickData(View view) {
