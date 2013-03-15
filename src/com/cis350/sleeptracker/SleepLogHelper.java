@@ -10,20 +10,22 @@ import android.util.Log;
 
 public class SleepLogHelper {
 	private static final String TAG = "SleepLogHelper";
-	private static final int TABLE_VERSION = 1;
+	private static final int TABLE_VERSION = 2;
 	private static final String TABLE_NAME = "sleep_log";
 	
 	// COLUMNS
 	public static final String ASLEEP_TIME = "asleep_time";
 	public static final String AWAKE_TIME = "awake_time";
+	public static final String NAP = "nap";
 	public static final String RATING = "rating";
 	public static final String COMMENTS = "comments";
 
-	public static final String[] COLUMNS = {ASLEEP_TIME, AWAKE_TIME, RATING, COMMENTS};
+	public static final String[] COLUMNS = {ASLEEP_TIME, AWAKE_TIME, NAP, RATING, COMMENTS};
 	
 	private static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME + " (" +
 			ASLEEP_TIME + " LONG PRIMARY KEY, " +
 			AWAKE_TIME + " LONG, " +
+			NAP + " INT, " +
 			RATING + " INT, " +
 			COMMENTS + " VARCHAR(255));";
 	
@@ -57,10 +59,15 @@ public class SleepLogHelper {
 		mDbHelper.close();
 	}
 	
-	public boolean insertLog(long asleepTime, long awakeTime) {
+	public boolean insertLog(long asleepTime, long awakeTime, boolean isNap) {
 		ContentValues values = new ContentValues();
 		values.put(ASLEEP_TIME, asleepTime);
 		values.put(AWAKE_TIME, awakeTime);
+		if (isNap) {
+			values.put(NAP, 1);
+		} else {
+			values.put(NAP, 0);
+		}
 		return (mDb.insert(TABLE_NAME, null, values) > 0);
 	}
 	

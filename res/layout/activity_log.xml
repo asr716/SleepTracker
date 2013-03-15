@@ -4,8 +4,16 @@
     android:orientation="vertical" 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/amber"
+    android:background="@color/background_color"
     android:padding="10dip" >
+    <TextView
+	    android:id="@+id/type_of_sleep"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:gravity="center_horizontal"
+	    android:textSize="30sp"
+	    android:textStyle="bold"
+	    android:textColor="@color/off_white" />
     <TextView
 	    android:id="@+id/total_sleep"
 	    android:layout_width="match_parent"
