@@ -4,6 +4,14 @@
     android:orientation="vertical" 
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/edit_time"
+        android:textSize="30sp"
+	    android:textStyle="bold"
+	    android:textColor="@color/off_white" />
     <TimePicker
         android:id="@+id/time_picker"
         android:layout_width="wrap_content"
@@ -19,5 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="@string/save"
+        android:textSize="20sp"
+	    android:textStyle="bold"
         android:onClick="onClickSave" />
 </LinearLayout>

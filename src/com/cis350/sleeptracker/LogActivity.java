@@ -6,9 +6,11 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RatingBar;
@@ -27,12 +29,21 @@ public class LogActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_log);
 		
+		// Customize Action Bar
+		getActionBar().setDisplayShowCustomEnabled(true);
+		getActionBar().setDisplayShowTitleEnabled(false);
+		LayoutInflater inflator = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View v = inflator.inflate(R.layout.view_action_bar, null);
+		((TextView)v.findViewById(R.id.title)).setText(getResources().getString(R.string.action_bar_title));
+		getActionBar().setCustomView(v);
+		
 		mAsleepTime = getIntent().getLongExtra(DataActivity.ITEM_ASLEEP_TIME_LONG, 0);
 		mAwakeTime = 0;
 		mSleepLogHelper = new SleepLogHelper(this);
 		mSimpleDateFormat = new SimpleDateFormat("MMM dd hh:mm a", Locale.US);
 		mRatingBar = (RatingBar) findViewById(R.id.rating_bar);
 		mCommentBox = (EditText) findViewById(R.id.comment_box);
+		TextView typeOfSleep = (TextView) findViewById(R.id.type_of_sleep);
 		
 		Cursor cursor = mSleepLogHelper.queryLog(mAsleepTime);
 		if (cursor != null) {
@@ -40,8 +51,14 @@ public class LogActivity extends Activity {
 			mAwakeTime = cursor.getLong(cursor.getColumnIndex(SleepLogHelper.AWAKE_TIME));
 			int rating = cursor.getInt(cursor.getColumnIndex(SleepLogHelper.RATING));
 			String comments = cursor.getString(cursor.getColumnIndex(SleepLogHelper.COMMENTS));
+			boolean wasNap = cursor.getInt(cursor.getColumnIndex(SleepLogHelper.NAP)) > 0;
 			mRatingBar.setRating(rating);
 			mCommentBox.setText(comments);
+			if (wasNap) {
+				typeOfSleep.setText(getResources().getString(R.string.nap));
+			} else {
+				typeOfSleep.setText(getResources().getString(R.string.night_sleep));
+			}
 		}
 	}
 	
