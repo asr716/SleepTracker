@@ -177,4 +177,8 @@ public class MainActivity extends Activity {
 		Intent intent = new Intent(this, DataActivity.class);
 		startActivity(intent);
 	}
+	public void onClickGraph(View view){
+		Intent intent = new Intent(this, ChartActivity.class);
+		startActivity(intent);
+	}
 }
