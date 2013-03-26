@@ -6,11 +6,9 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RatingBar;
@@ -28,14 +26,7 @@ public class LogActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_log);
-		
-		// Customize Action Bar
-		getActionBar().setDisplayShowCustomEnabled(true);
-		getActionBar().setDisplayShowTitleEnabled(false);
-		LayoutInflater inflator = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View v = inflator.inflate(R.layout.view_action_bar, null);
-		((TextView)v.findViewById(R.id.title)).setText(getResources().getString(R.string.action_bar_title));
-		getActionBar().setCustomView(v);
+		MainActivity.customizeActionBar(this);
 		
 		mAsleepTime = getIntent().getLongExtra(DataActivity.ITEM_ASLEEP_TIME_LONG, 0);
 		mAwakeTime = 0;

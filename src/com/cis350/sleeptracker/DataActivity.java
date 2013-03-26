@@ -10,17 +10,18 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 
 public class DataActivity extends Activity {
 	public final static String ITEM_ASLEEP_TIME_LONG = "asleep_time_long";
@@ -35,6 +36,7 @@ public class DataActivity extends Activity {
 	private SleepLogHelper mSleepLogHelper;
 	private List<Map<String, ?>> mDataList;
 	private SimpleDateFormat mSimpleDateFormat;
+	private Context mContext;
 	
 	private Map<String, ?> createItem(long longAsleepTime, String asleepTime, String awakeTime, String typeOfSleep, String totalSleep) {
 		Map<String, String> item = new HashMap<String, String>();
@@ -50,15 +52,9 @@ public class DataActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_data);
+		MainActivity.customizeActionBar(this);
 		
-		// Customize Action Bar
-		getActionBar().setDisplayShowCustomEnabled(true);
-		getActionBar().setDisplayShowTitleEnabled(false);
-		LayoutInflater inflator = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View v = inflator.inflate(R.layout.view_action_bar, null);
-		((TextView)v.findViewById(R.id.title)).setText(getResources().getString(R.string.action_bar_title));
-		getActionBar().setCustomView(v);
-		
+		mContext = this;
 		mDataListView = (ListView) findViewById(R.id.data_list);
 		mSleepLogHelper = new SleepLogHelper(this);
 		mSimpleDateFormat = new SimpleDateFormat("MMM dd hh:mm a", Locale.US);
@@ -68,6 +64,29 @@ public class DataActivity extends Activity {
 				Intent intent = new Intent(view.getContext(), LogActivity.class);
 				intent.putExtra(ITEM_ASLEEP_TIME_LONG, asleepTime);
 				startActivity(intent);
+			}
+		});
+		mDataListView.setOnItemLongClickListener(new OnItemLongClickListener() {
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+				final long asleepTime = Long.valueOf((String) mDataList.get(position).get(ITEM_ASLEEP_TIME_LONG));
+				AlertDialog.Builder deleteDialogBuilder = new AlertDialog.Builder(mContext);
+				deleteDialogBuilder.setTitle("Delete Entry");
+				deleteDialogBuilder.setMessage("Would you like to delete this entry?");
+				deleteDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						mSleepLogHelper.deleteEntry(asleepTime);
+						onResume();
+						dialog.dismiss();
+					}
+				});
+				deleteDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
+				AlertDialog deleteDialog = deleteDialogBuilder.create();
+				deleteDialog.show();
+				return true;
 			}
 		});
 	}

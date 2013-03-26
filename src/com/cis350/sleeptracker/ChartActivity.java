@@ -45,6 +45,7 @@ public class ChartActivity extends Activity {
 		today = System.currentTimeMillis()/DAY_IN_MILLISECONDS*DAY_IN_MILLISECONDS;
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chart);
+		MainActivity.customizeActionBar(this);
 		mSleepLogHelper = new SleepLogHelper(this);
 	}
 
