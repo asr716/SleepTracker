@@ -10,22 +10,35 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/penn_logo"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.cis350.sleeptracker.MainActivity"
-            android:label="@string/app_name" >
+            android:configChanges="orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.cis350.sleeptracker.DataActivity" />
-        <activity android:name="com.cis350.sleeptracker.LogActivity" />
-        <activity android:name="com.cis350.sleeptracker.ModifyTimeActivity"
+        <activity
+            android:name="com.cis350.sleeptracker.DataActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.cis350.sleeptracker.LogActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.cis350.sleeptracker.ModifyTimeActivity"
             android:theme="@android:style/Theme.Dialog" />
+        <activity
+            android:name="com.cis350.sleeptracker.ChartActivity"
+            android:label="@string/title_activity_chart" >
+        </activity>
     </application>
 
 </manifest>

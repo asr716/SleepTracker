@@ -2,19 +2,28 @@
 <resources>
 
     <string name="app_name">Sleep Tracker</string>
+    <string name="action_bar_title">UPenn SHS Sleep Tracker</string>
     <string name="menu_settings">Settings</string>
-    
     <string name="go_to_sleep">Go To Sleep</string>
     <string name="wake_up">Wake Up</string>
-    <string name="edit_data">Edit Data</string>
+    <string name="view_data">View Data</string>
+    <string name="view_graphs">View Graphs</string>
     <string name="status">Status:</string>
-    
     <string name="sleep">SLEEP</string>
     <string name="wake">WAKE</string>
     <string name="pending">Pending&#8230;</string>
-    
     <string name="comment_hint">Comments on sleep</string>
     <string name="edit">Edit</string>
-    
+    <string name="nap">Nap</string>
+    <string name="night_sleep">Nighttime Sleep</string>
+    <string name="edit_time">Edit Time/Date</string>
     <string name="save">Save</string>
+    <string name="shs_logo_description">SHS Logo</string>
+
+    <!-- Tips split with character ":" -->
+    <string name="tip_of_day">Tip of the Day:</string>
+    <string name="tips">Use your bed primarily for sleeping (or other obvious bed-related activities). Avoid doing schoolwork, watching t.v. or using the computer while in bed.:Try to go to bed and wake up at approximately the same times. This helps your body\'s internal clock get sleepy and more awake at the appropriate times. Try not to vary this by more than 2 hours on the weekends.:Make sure your bed and bedroom is a comfortable place! If you need to get more mattress or pillow support please do so. This is an easy solution to overlook. Use ear plugs, a white noise machine, and/or a night mask if you need to.:Do something relaxing in the 30 minutes leading up to bedtime. Television and internet tend to be stimulating activities for your brain so try to avoid them right before bed. Instead try taking a warm shower, reading, listening to music, or some other calming activity.:Avoid consuming alcohol or using tobacco in the 4 hours before bed and food in the 2 hours before. Alcohol tends to make you sleepy but then actually interferes with deep sleep. Tobacco acts as a stimulant. Trying to fall asleep on a full stomach isn\'t ideal either, but if you are awake because you are hungry then try eating a light snack before bed.:Avoid naps! They can upset your sleep/wake cycle. If you must, you can try napping for about 10&#8211;15 minutes but no longer.:No caffeine later than mid-day.:Exercise! Aim for earlier in the day as exercise in the 4 hours before bedtime can actually wake your body up instead of making you tired.:Turn your clock away from your bed. If you can\'t fall asleep then get up and do a quiet activity until you start to feel sleepy.:Decrease stress in whatever ways possible! Stress can play a huge role in any and all sleep issues. If you tend to lie awake thinking at night then keep a \"worry journal\" near bed and before you turn out the light make a \"to-do\" list for the next day or write down any other concerns you might have. Think of the journal as a place to keep these things so that they can\'t distract you overnight.</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_chart">ChartActivity</string>
+
 </resources>

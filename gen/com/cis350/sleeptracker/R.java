@@ -10,44 +10,74 @@ package com.cis350.sleeptracker;
 public final class R {
     public static final class attr {
     }
+    public static final class color {
+        public static final int background_color=0x7f050000;
+        public static final int off_white=0x7f050001;
+    }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
+        public static final int border=0x7f020000;
+        public static final int ic_launcher=0x7f020001;
+        public static final int penn_logo=0x7f020002;
+        public static final int shs_logo=0x7f020003;
     }
     public static final class id {
-        public static final int asleep_time=0x7f070002;
-        public static final int awake_time=0x7f070003;
-        public static final int comment_box=0x7f070005;
-        public static final int data_list=0x7f070000;
-        public static final int date_picker=0x7f070008;
-        public static final int menu_settings=0x7f070009;
-        public static final int rating_bar=0x7f070004;
-        public static final int status=0x7f070006;
-        public static final int time_picker=0x7f070007;
-        public static final int total_sleep=0x7f070001;
+        public static final int asleep_time=0x7f090004;
+        public static final int awake_time=0x7f090005;
+        public static final int chart=0x7f090000;
+        public static final int comment_box=0x7f090007;
+        public static final int data_list=0x7f090001;
+        public static final int date_picker=0x7f09000c;
+        public static final int menu_settings=0x7f09000e;
+        public static final int rating_bar=0x7f090006;
+        public static final int sleep_wake_button=0x7f09000a;
+        public static final int status=0x7f090008;
+        public static final int time_picker=0x7f09000b;
+        public static final int tip=0x7f090009;
+        public static final int title=0x7f09000d;
+        public static final int total_sleep=0x7f090003;
+        public static final int type_of_sleep=0x7f090002;
     }
     public static final class layout {
-        public static final int activity_data=0x7f030000;
-        public static final int activity_log=0x7f030001;
-        public static final int activity_main=0x7f030002;
-        public static final int activity_modify_time=0x7f030003;
-        public static final int data_item=0x7f030004;
+        public static final int activity_chart=0x7f030000;
+        public static final int activity_data=0x7f030001;
+        public static final int activity_log=0x7f030002;
+        public static final int activity_main=0x7f030003;
+        public static final int activity_modify_time=0x7f030004;
+        public static final int data_item=0x7f030005;
+        public static final int view_action_bar=0x7f030006;
     }
     public static final class menu {
-        public static final int activity_main=0x7f060000;
+        public static final int activity_chart=0x7f080000;
+        public static final int activity_main=0x7f080001;
+    }
+    public static final class raw {
+        public static final int shs_podcast=0x7f040000;
     }
     public static final class string {
-        public static final int app_name=0x7f040000;
-        public static final int comment_hint=0x7f040009;
-        public static final int edit=0x7f04000a;
-        public static final int edit_data=0x7f040004;
-        public static final int go_to_sleep=0x7f040002;
-        public static final int menu_settings=0x7f040001;
-        public static final int pending=0x7f040008;
-        public static final int save=0x7f04000b;
-        public static final int sleep=0x7f040006;
-        public static final int status=0x7f040005;
-        public static final int wake=0x7f040007;
-        public static final int wake_up=0x7f040003;
+        public static final int action_bar_title=0x7f060001;
+        public static final int app_name=0x7f060000;
+        public static final int comment_hint=0x7f06000b;
+        public static final int edit=0x7f06000c;
+        public static final int edit_time=0x7f06000f;
+        public static final int go_to_sleep=0x7f060003;
+        public static final int hello_world=0x7f060014;
+        public static final int menu_settings=0x7f060002;
+        public static final int nap=0x7f06000d;
+        public static final int night_sleep=0x7f06000e;
+        public static final int pending=0x7f06000a;
+        public static final int save=0x7f060010;
+        public static final int shs_logo_description=0x7f060011;
+        public static final int sleep=0x7f060008;
+        public static final int status=0x7f060007;
+        /**  Tips split with character ":" 
+         */
+        public static final int tip_of_day=0x7f060012;
+        public static final int tips=0x7f060013;
+        public static final int title_activity_chart=0x7f060015;
+        public static final int view_data=0x7f060005;
+        public static final int view_graphs=0x7f060006;
+        public static final int wake=0x7f060009;
+        public static final int wake_up=0x7f060004;
     }
     public static final class style {
         /** 
@@ -71,10 +101,10 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f050000;
+        public static final int AppBaseTheme=0x7f070000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f050001;
+        public static final int AppTheme=0x7f070001;
     }
 }

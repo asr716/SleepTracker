@@ -4,7 +4,8 @@
    	android:orientation="horizontal" 
    	android:layout_width="match_parent"
    	android:layout_height="match_parent"
-   	android:padding="10dip" >
+   	android:padding="10dip"
+   	android:baselineAligned="false" >
    	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	   	xmlns:tools="http://schemas.android.com/tools"
 	   	android:orientation="vertical" 
@@ -15,28 +16,47 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:text="@string/sleep"
-	        android:textStyle="bold" />
+	        android:textStyle="bold"
+	        android:textColor="@color/off_white" />
 	    <TextView
 	        android:id="@+id/asleep_time"
 	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content" />
+	        android:layout_height="wrap_content"
+	        android:textColor="@color/off_white" />
 	    <TextView
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:text="@string/wake"
-	        android:textStyle="bold" />
+	        android:textStyle="bold"
+	        android:textColor="@color/off_white" />
 	    <TextView
 	        android:id="@+id/awake_time"
 	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content" />
+	        android:layout_height="wrap_content"
+	        android:textColor="@color/off_white" />
 	</LinearLayout>
-	<TextView
-	    android:id="@+id/total_sleep"
-	    android:layout_width="wrap_content"
-	    android:layout_height="match_parent"
-	    android:layout_weight="0" 
-	    android:gravity="center_vertical"
-	    android:textSize="20sp"
-	    android:textStyle="bold" />
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	   	xmlns:tools="http://schemas.android.com/tools"
+	   	android:orientation="vertical" 
+	   	android:layout_width="wrap_content"
+	   	android:layout_height="wrap_content" 
+	   	android:layout_weight="0" >
+	    <TextView
+		    android:id="@+id/type_of_sleep"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_gravity="center_horizontal"
+		    android:textSize="20sp"
+		    android:textStyle="bold"
+		    android:textColor="@color/off_white" />
+		<TextView
+		    android:id="@+id/total_sleep"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_gravity="center_horizontal"
+		    android:textSize="20sp"
+		    android:textStyle="bold"
+		    android:textColor="@color/off_white" />
+	</LinearLayout>
 </LinearLayout>
    	

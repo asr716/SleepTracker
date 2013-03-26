@@ -3,33 +3,64 @@
     android:orientation="vertical" 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity" >
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    	xmlns:tools="http://schemas.android.com/tools"
-    	android:orientation="horizontal" 
-    	android:layout_width="match_parent"
-    	android:layout_height="wrap_content"
-    	android:gravity="center" >
-	    <Button
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/go_to_sleep"
-	        android:onClick="onClickSleep" />  
-	    <Button
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/wake_up"
-	        android:onClick="onClickWake" />   
-	    <Button
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/edit_data"
-	        android:onClick="onClickData" />
-    </LinearLayout>
+    android:background="@color/background_color"
+    android:padding="20dip" >
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:contentDescription="@string/shs_logo_description"
+        android:src="@drawable/shs_logo" />
     <TextView
         android:id="@+id/status"
         android:layout_width="match_parent"
-	    android:layout_height="match_parent"
+	    android:layout_height="wrap_content"
 	    android:gravity="center"
-	    android:textSize="20sp" />
+	    android:layout_weight="1"
+	    android:textSize="40sp"
+	    android:textColor="@color/off_white" />
+    <TextView
+        android:id="@+id/tip"
+        android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:gravity="center"
+	    android:layout_weight="1"
+	    android:layout_marginTop="20dip"
+		android:background="@drawable/border"
+	    android:textSize="20sp"
+	    android:textColor="@color/off_white" />
+    <Button
+        android:id="@+id/sleep_wake_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="32"
+        android:layout_marginTop="20dip"
+        android:text="@string/go_to_sleep"
+        android:textSize="40sp"
+        android:textColor="@color/off_white"
+        android:onClick="onClickSleepOrWake" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    xmlns:tools="http://schemas.android.com/tools"
+	    android:orientation="horizontal" 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginTop="20dip" >
+	    <Button
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:text="@string/view_data"
+	        android:textSize="20sp"
+	        android:textColor="@color/off_white"
+	        android:onClick="onClickData" />
+	    <Button
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:text="@string/view_graphs"
+	        android:textSize="20sp"
+	        android:textColor="@color/off_white" 
+	        android:onClick="onClickGraph" />
+	</LinearLayout>
 </LinearLayout>
