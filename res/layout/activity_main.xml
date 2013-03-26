@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_color"
-    android:padding="20dip"
-    tools:context=".MainActivity" >
+    android:padding="20dip" >
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -62,6 +61,6 @@
 	        android:text="@string/view_graphs"
 	        android:textSize="20sp"
 	        android:textColor="@color/off_white" 
-	        android:onClick="onClickGraph" />/>
+	        android:onClick="onClickGraph" />
 	</LinearLayout>
 </LinearLayout>

@@ -12,7 +12,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -31,22 +30,15 @@ public class MainActivity extends Activity {
 	private TextView mStatus;
 	private Button mSleepWakeButton;
 	private SleepLogHelper mSleepLogHelper;
-	private Context context;
+	private Context mContext;
 	
-	private static MediaPlayer podcastPlayer;
+	private static MediaPlayer mPodcastPlayer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
-		// Customize Action Bar
-		getActionBar().setDisplayShowCustomEnabled(true);
-		getActionBar().setDisplayShowTitleEnabled(false);
-		LayoutInflater inflator = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View v = inflator.inflate(R.layout.view_action_bar, null);
-		((TextView)v.findViewById(R.id.title)).setText(getResources().getString(R.string.action_bar_title));
-		getActionBar().setCustomView(v);
+		customizeActionBar(this);
 		
 		mPreferences = getSharedPreferences(MAIN, MODE_PRIVATE);
 		mSleepWakeButton = (Button) findViewById(R.id.sleep_wake_button);
@@ -59,8 +51,7 @@ public class MainActivity extends Activity {
 			mStatus.setText(getResources().getString(R.string.status) + " " + ASLEEP);
 		}
 		mSleepLogHelper = new SleepLogHelper(this);
-		//mSleepLogHelper.deleteAllEntries();
-		context = this;
+		mContext = this;
 	}
 	
 	@Override
@@ -96,14 +87,6 @@ public class MainActivity extends Activity {
 			return tips[position];
 		}
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_main, menu);
-		return true;
-		
-	}
 	
 	public void onClickSleepOrWake(View view) {
 		if (!mPreferences.getBoolean(IS_ASLEEP, false)) {
@@ -122,35 +105,32 @@ public class MainActivity extends Activity {
 			mStatus.setText(getResources().getString(R.string.status) + " " + AWAKE);
 			mSleepLogHelper.insertLog(mPreferences.getLong(RECENT_SLEEP_TIME, 0),
 					System.currentTimeMillis(), mPreferences.getBoolean(IS_NAP, false));
-			if (podcastPlayer != null) {
-				podcastPlayer.stop();
-				podcastPlayer.release();
+			if (mPodcastPlayer != null) {
+				mPodcastPlayer.stop();
+				mPodcastPlayer.release();
 			}
 		}
 	}
 	
 	private void displayDialogs() {
-		AlertDialog.Builder podcastDialogBuilder = new AlertDialog.Builder(context);
+		AlertDialog.Builder podcastDialogBuilder = new AlertDialog.Builder(mContext);
 		podcastDialogBuilder.setTitle("Podcast");
 		podcastDialogBuilder.setMessage("Would you like to listen to the Podcast?");
 		podcastDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-				// if this button is clicked play podcast
-				podcastPlayer = MediaPlayer.create(context, R.raw.shs_podcast);
-				podcastPlayer.start();
+				mPodcastPlayer = MediaPlayer.create(mContext, R.raw.shs_podcast);
+				mPodcastPlayer.start();
 				dialog.dismiss();
 			}
 		});
-		podcastDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog,int id) {
-				// if this button is clicked, just close
-				// the dialog box and do nothing
+		podcastDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
 				dialog.cancel();
 			}
 		});
 		final AlertDialog podcastAlertDialog = podcastDialogBuilder.create();
 		
-		AlertDialog.Builder napDialogBuilder = new AlertDialog.Builder(context);
+		AlertDialog.Builder napDialogBuilder = new AlertDialog.Builder(mContext);
 		napDialogBuilder.setTitle("Nap or Nighttime Sleep");
 		napDialogBuilder.setMessage("Are you taking a nap or going to sleep for the night?");
 		napDialogBuilder.setPositiveButton("Nighttime Sleep", new DialogInterface.OnClickListener() {
@@ -180,5 +160,15 @@ public class MainActivity extends Activity {
 	public void onClickGraph(View view){
 		Intent intent = new Intent(this, ChartActivity.class);
 		startActivity(intent);
+	}
+	
+	public static void customizeActionBar(Activity activity) {
+		// Customize Action Bar
+		activity.getActionBar().setDisplayShowCustomEnabled(true);
+		activity.getActionBar().setDisplayShowTitleEnabled(false);
+		LayoutInflater inflator = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View v = inflator.inflate(R.layout.view_action_bar, null);
+		((TextView)v.findViewById(R.id.title)).setText(activity.getResources().getString(R.string.action_bar_title));
+		activity.getActionBar().setCustomView(v);
 	}
 }

@@ -100,7 +100,8 @@ public class SleepLogHelper {
 	}
 	
 	public Cursor queryAll() {
-		return mDb.query(TABLE_NAME, COLUMNS, null, null, null, null, null);
+		String orderBy = ASLEEP_TIME + " DESC";
+		return mDb.query(TABLE_NAME, COLUMNS, null, null, null, null, orderBy);
 	}
 	
 	public Cursor queryLog(long asleepTime) {
@@ -114,5 +115,10 @@ public class SleepLogHelper {
 	
 	public boolean deleteAllEntries() {
 		return (mDb.delete(TABLE_NAME, null, null) > 0);
+	}
+	
+	public boolean deleteEntry(long asleepTime) {
+		String whereClause = ASLEEP_TIME + "=" + asleepTime;
+		return (mDb.delete(TABLE_NAME, whereClause, null) > 0);
 	}
 }
