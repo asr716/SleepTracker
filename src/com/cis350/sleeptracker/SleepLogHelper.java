@@ -113,6 +113,12 @@ public class SleepLogHelper {
 		return mDb.query(TABLE_NAME, COLUMNS, selection, null, null, null, null);
 	}
 	
+	public int numEntries(){
+		String selection = NAP + "=0";
+		Cursor temp = mDb.query(TABLE_NAME, COLUMNS, selection, null, null, null, null);
+		return temp.getCount();
+	}
+	
 	public boolean deleteAllEntries() {
 		return (mDb.delete(TABLE_NAME, null, null) > 0);
 	}
