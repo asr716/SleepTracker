@@ -153,4 +153,19 @@ public class ChartActivity extends Activity {
 			numEntries--;
 		}
     }
+	
+	public XYSeries getTotalSeries() {
+		return mTotalSleepSeries;
+	}
+	
+	public XYSeries getNapSeries() {
+		return mNapSeries;
+	}
+
+	public void add(double x, double y, boolean isNap) {
+		if (isNap)
+			mNapSeries.add(x,y);
+		else
+			mTotalSleepSeries.add(x,y);
+	}
 }
