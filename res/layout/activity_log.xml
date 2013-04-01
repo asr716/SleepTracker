@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linear_layout"
     android:orientation="vertical" 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,7 +12,7 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:gravity="center_horizontal"
-	    android:textSize="30sp"
+	    android:textSize="25sp"
 	    android:textStyle="bold"
 	    android:textColor="@color/off_white" />
     <TextView
@@ -19,7 +20,7 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:gravity="center_horizontal"
-	    android:textSize="30sp"
+	    android:textSize="25sp"
 	    android:textStyle="bold"
 	    android:textColor="@color/off_white" />
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -32,7 +33,7 @@
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
 	        android:text="@string/sleep"
-	        android:textSize="20sp"
+	        android:textSize="15sp"
 	        android:textStyle="bold"
 	        android:textColor="@color/off_white" />
 	    <TextView
@@ -41,7 +42,7 @@
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
 	        android:paddingLeft="10dip"
-	        android:textSize="20sp"
+	        android:textSize="15sp"
 	        android:textColor="@color/off_white" />
 	    <Button
 	        android:layout_width="wrap_content"
@@ -61,7 +62,7 @@
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
 	        android:text="@string/wake"
-	        android:textSize="20sp"
+	        android:textSize="15sp"
 	        android:textStyle="bold"
 	        android:textColor="@color/off_white" />
 	    <TextView
@@ -70,7 +71,7 @@
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
 	        android:paddingLeft="10dip"
-	        android:textSize="20sp"
+	        android:textSize="15sp"
 	        android:textColor="@color/off_white" />
 	    <Button
 	        android:layout_width="wrap_content"
@@ -87,11 +88,35 @@
 	    android:layout_gravity="center_horizontal"
 	    android:numStars="5"
 	    android:stepSize="1" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/excuse_header"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:textColor="@color/off_white" />
+    <ListView
+        android:id="@+id/excuses_list"
+        android:layout_width="match_parent"
+   	 	android:layout_height="fill_parent"
+   	 	android:layout_weight="1"
+   	 	android:divider="@color/off_white"
+    	android:dividerHeight="1sp"
+    	android:fadeScrollbars="false" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/comment_title"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:textColor="@color/off_white" />
     <EditText
         android:id="@+id/comment_box"
         android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_gravity="center_horizontal"
+	    android:textSize="15sp"
+        android:textStyle="bold"
 	    android:textColor="@color/off_white"
 	    android:maxLength="255"
 	    android:hint="@string/comment_hint" />
@@ -99,8 +124,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/save"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         android:textColor="@color/off_white"
-        android:onClick="onClickSave"/>
+        android:onClick="onClickSave" />
 </LinearLayout>
