@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/edit_time"
-        android:textSize="30sp"
+        android:textSize="25sp"
 	    android:textStyle="bold"
 	    android:textColor="@color/off_white" />
     <TimePicker
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="@string/save"
-        android:textSize="20sp"
+        android:textSize="15sp"
 	    android:textStyle="bold"
         android:onClick="onClickSave" />
 </LinearLayout>

@@ -10,7 +10,7 @@ import android.util.Log;
 
 public class SleepLogHelper {
 	private static final String TAG = "SleepLogHelper";
-	private static final int TABLE_VERSION = 2;
+	private static final int TABLE_VERSION = 3;
 	private static final String TABLE_NAME = "sleep_log";
 	
 	// COLUMNS
@@ -18,15 +18,29 @@ public class SleepLogHelper {
 	public static final String AWAKE_TIME = "awake_time";
 	public static final String NAP = "nap";
 	public static final String RATING = "rating";
+	public static final String CAFFEINE = "caffeine";
+	public static final String ALCOHOL = "alcohol";
+	public static final String NICOTINE = "nicotine";
+	public static final String SUGAR = "sugar";
+	public static final String SCREEN_TIME = "screen_time";
+	public static final String EXERCISE = "exercise";
 	public static final String COMMENTS = "comments";
 
-	public static final String[] COLUMNS = {ASLEEP_TIME, AWAKE_TIME, NAP, RATING, COMMENTS};
+	public static final String[] COLUMNS = {ASLEEP_TIME, AWAKE_TIME, NAP, RATING, CAFFEINE, ALCOHOL,
+		NICOTINE, SUGAR, SCREEN_TIME, EXERCISE, COMMENTS};
+	public static final String[] EXCUSES = {CAFFEINE, ALCOHOL, NICOTINE, SUGAR, SCREEN_TIME, EXERCISE};
 	
 	private static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME + " (" +
 			ASLEEP_TIME + " LONG PRIMARY KEY, " +
 			AWAKE_TIME + " LONG, " +
 			NAP + " INT, " +
 			RATING + " INT, " +
+			CAFFEINE + " INT, " +
+			ALCOHOL + " INT, " +
+			NICOTINE + " INT, " +
+			SUGAR + " INT, " +
+			SCREEN_TIME + " INT, " +
+			EXERCISE + " INT, " +
 			COMMENTS + " VARCHAR(255));";
 	
 	private SQLiteDatabase mDb;
@@ -68,6 +82,12 @@ public class SleepLogHelper {
 		} else {
 			values.put(NAP, 0);
 		}
+		values.put(CAFFEINE, 0);
+		values.put(ALCOHOL, 0);
+		values.put(NICOTINE, 0);
+		values.put(SUGAR, 0);
+		values.put(SCREEN_TIME, 0);
+		values.put(EXERCISE, 0);
 		return (mDb.insert(TABLE_NAME, null, values) > 0);
 	}
 	
@@ -88,6 +108,19 @@ public class SleepLogHelper {
 	public boolean updateRating(long asleepTime, int rating) {
 		ContentValues values = new ContentValues();
 		values.put(RATING, rating);
+		String whereClause = ASLEEP_TIME + "=" + asleepTime;
+		return (mDb.update(TABLE_NAME, values, whereClause, null) > 0);
+	}
+	
+	public boolean updateExcuses(long asleepTime, boolean[] excuses) {
+		ContentValues values = new ContentValues();
+		for (int i = 0; i < EXCUSES.length; i++) {
+			if (excuses[i]) {
+				values.put(EXCUSES[i], 1);
+			} else {
+				values.put(EXCUSES[i], 0);
+			}
+		}
 		String whereClause = ASLEEP_TIME + "=" + asleepTime;
 		return (mDb.update(TABLE_NAME, values, whereClause, null) > 0);
 	}
