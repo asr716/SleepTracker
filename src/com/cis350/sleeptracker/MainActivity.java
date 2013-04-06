@@ -11,7 +11,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -19,11 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
-	public static final String MAIN = "main";
-	public static final String IS_ASLEEP = "is_asleep";
-	
-	private static final String AWAKE = "AWAKE";
-	private static final String ASLEEP = "ASLEEP";
+	protected static final String MAIN = "main";
+	protected static final String IS_ASLEEP = "is_asleep";
 	private static final String LAST_LAUNCH = "last_launch";
 	private static final String TIP_POSITION = "tip_position";
 	private static final String RECENT_SLEEP_TIME = "recent_sleep_time";
@@ -31,9 +27,6 @@ public class MainActivity extends Activity {
 	
 	private SharedPreferences mPreferences;
 	private LinearLayout mMainLinearLayout;
-	private TextView mTip;
-	private GradientDrawable mTipDrawable;
-	private TextView mStatus;
 	private Button mSleepWakeButton;
 	private SleepLogHelper mSleepLogHelper;
 	private Context mContext;
@@ -48,20 +41,13 @@ public class MainActivity extends Activity {
 		
 		mPreferences = getSharedPreferences(MAIN, MODE_PRIVATE);
 		mMainLinearLayout = (LinearLayout) findViewById(R.id.main_linear_layout);
-		mTip = (TextView) findViewById(R.id.tip);
-		mTipDrawable = (GradientDrawable) mTip.getBackground();
-		//mTipDrawable.setColorFilter(getResources().getColor(R.color.background_color_awake), Mode.SRC);
-		mTipDrawable.setAlpha(0);
 		mSleepWakeButton = (Button) findViewById(R.id.sleep_wake_button);
-		mStatus = (TextView) findViewById(R.id.status);
 		if (!mPreferences.getBoolean(IS_ASLEEP, false)) {
 			mMainLinearLayout.setBackgroundColor(getResources().getColor(R.color.background_color_awake));
 			mSleepWakeButton.setText(getResources().getString(R.string.go_to_sleep));
-			mStatus.setText(getResources().getString(R.string.status) + " " + AWAKE);
 		} else {
 			mMainLinearLayout.setBackgroundColor(getResources().getColor(R.color.background_color));
 			mSleepWakeButton.setText(getResources().getString(R.string.wake_up));
-			mStatus.setText(getResources().getString(R.string.status) + " " + ASLEEP);
 		}
 		mSleepLogHelper = new SleepLogHelper(this);
 		mContext = this;
@@ -71,9 +57,15 @@ public class MainActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		String[] tips = getResources().getString(R.string.tips).split(":");
-		mTip.setText(getTip(tips));
+		TextView tip = (TextView) findViewById(R.id.tip);
+		tip.setText(getTip(tips));
 	}
 	
+	/*
+	 * Takes in an array of tips and returns which one to display.  A different tip is displayed each day.  
+	 * So if the last date recorded is not the current date, the next tip in the array should be returned.
+	 * Otherwise, the tip at the saved position of the array should be returned.
+	 */
 	private String getTip(String[] tips) {
 		SharedPreferences.Editor editor = mPreferences.edit();
 		GregorianCalendar cal = new GregorianCalendar();
@@ -100,6 +92,13 @@ public class MainActivity extends Activity {
 		}
 	}
 	
+	/*
+	 * Method called when the large button is clicked to indicate going to sleep or waking up.
+	 * Method changes background color and button text.
+	 * When going to sleep, it also records the time and calls a method to prompt dialogs.
+	 * When waking up, it also inserts a new sleep log into the local database, kills the podcast,
+	 * and starts the LogActivity so that the user can rate and comment on his/her sleep.
+	 */
 	public void onClickSleepOrWake(View view) {
 		if (!mPreferences.getBoolean(IS_ASLEEP, false)) {
 			SharedPreferences.Editor editor = mPreferences.edit();
@@ -108,7 +107,6 @@ public class MainActivity extends Activity {
 			editor.commit();
 			mMainLinearLayout.setBackgroundColor(getResources().getColor(R.color.background_color));
 			mSleepWakeButton.setText(getResources().getString(R.string.wake_up));
-			mStatus.setText(getResources().getString(R.string.status) + " " + ASLEEP);
 			displayDialogs();
 		} else {
 			SharedPreferences.Editor editor = mPreferences.edit();
@@ -116,7 +114,6 @@ public class MainActivity extends Activity {
 			editor.commit();
 			mMainLinearLayout.setBackgroundColor(getResources().getColor(R.color.background_color_awake));
 			mSleepWakeButton.setText(getResources().getString(R.string.go_to_sleep));
-			mStatus.setText(getResources().getString(R.string.status) + " " + AWAKE);
 			mSleepLogHelper.insertLog(mPreferences.getLong(RECENT_SLEEP_TIME, 0),
 					System.currentTimeMillis(), mPreferences.getBoolean(IS_NAP, false));
 			if (mPodcastPlayer != null) {
@@ -129,10 +126,15 @@ public class MainActivity extends Activity {
 		}
 	}
 	
+	/*
+	 * Method displays two consecutive dialogs.  The first prompts the user to pick whether he/she is
+	 * going to sleep for the night or taking a nap.  The second asks the user whether he/she wants
+	 * to listen to the podcast while falling asleep.
+	 */
 	private void displayDialogs() {
 		AlertDialog.Builder podcastDialogBuilder = new AlertDialog.Builder(mContext);
-		podcastDialogBuilder.setTitle("Podcast");
-		podcastDialogBuilder.setMessage("Would you like to listen to the Podcast?");
+		podcastDialogBuilder.setTitle(getResources().getString(R.string.podcast_dialog_title));
+		podcastDialogBuilder.setMessage(getResources().getString(R.string.podcast_dialog_message));
 		podcastDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				mPodcastPlayer = MediaPlayer.create(mContext, R.raw.shs_podcast);
@@ -148,9 +150,9 @@ public class MainActivity extends Activity {
 		final AlertDialog podcastAlertDialog = podcastDialogBuilder.create();
 		
 		AlertDialog.Builder napDialogBuilder = new AlertDialog.Builder(mContext);
-		napDialogBuilder.setTitle("Nap or Nighttime Sleep");
-		napDialogBuilder.setMessage("Are you taking a nap or going to sleep for the night?");
-		napDialogBuilder.setPositiveButton("Nighttime Sleep", new DialogInterface.OnClickListener() {
+		napDialogBuilder.setTitle(getResources().getString(R.string.nap_dialog_title));
+		napDialogBuilder.setMessage(getResources().getString(R.string.nap_dialog_message));
+		napDialogBuilder.setPositiveButton("Sleep", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				SharedPreferences.Editor editor = mPreferences.edit();
 				editor.putBoolean(IS_NAP, false);

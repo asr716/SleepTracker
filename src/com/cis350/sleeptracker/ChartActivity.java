@@ -22,8 +22,7 @@ public class ChartActivity extends Activity {
 	private static final long DAY_IN_MILLISECONDS = 86400000;
 	private static final int HOUR_IN_MILLISECONDS = 3600000;
 	private static final int WEEK = 7;
-	
-	
+
 	private long today;
 	private GraphicalView mChart;
     private XYMultipleSeriesDataset mDataset = new XYMultipleSeriesDataset();
@@ -33,7 +32,6 @@ public class ChartActivity extends Activity {
     
     private SleepLogHelper mSleepLogHelper;
 
-    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		mRenderer.setMargins(new int[]{30,50,60,0});

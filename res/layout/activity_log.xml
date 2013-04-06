@@ -5,122 +5,317 @@
     android:orientation="vertical" 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color"
-    android:padding="10dip" >
-    <TextView
-	    android:id="@+id/type_of_sleep"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:gravity="center_horizontal"
-	    android:textSize="25sp"
-	    android:textStyle="bold"
-	    android:textColor="@color/off_white" />
-    <TextView
-	    android:id="@+id/total_sleep"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:gravity="center_horizontal"
-	    android:textSize="25sp"
-	    android:textStyle="bold"
-	    android:textColor="@color/off_white" />
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/background_color" >
+	<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 	    xmlns:tools="http://schemas.android.com/tools"
-	    android:orientation="horizontal" 
 	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content" >
-	    <TextView
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:text="@string/sleep"
-	        android:textSize="15sp"
-	        android:textStyle="bold"
-	        android:textColor="@color/off_white" />
-	    <TextView
-	        android:id="@+id/asleep_time"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:paddingLeft="10dip"
-	        android:textSize="15sp"
-	        android:textColor="@color/off_white" />
-	    <Button
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="0"
-	        android:text="@string/edit"
-	        android:textColor="@color/off_white"
-	        android:onClick="onClickEditSleep" />
-    </LinearLayout>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	    xmlns:tools="http://schemas.android.com/tools"
-	    android:orientation="horizontal" 
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content" >
-	    <TextView
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:text="@string/wake"
-	        android:textSize="15sp"
-	        android:textStyle="bold"
-	        android:textColor="@color/off_white" />
-	    <TextView
-	        android:id="@+id/awake_time"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:paddingLeft="10dip"
-	        android:textSize="15sp"
-	        android:textColor="@color/off_white" />
-	    <Button
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="0"
-	        android:text="@string/edit"
-	        android:textColor="@color/off_white"
-	        android:onClick="onClickEditWake" />
-    </LinearLayout>
-    <RatingBar
-	    android:id="@+id/rating_bar"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_gravity="center_horizontal"
-	    android:numStars="5"
-	    android:stepSize="1" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/excuse_header"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:textColor="@color/off_white" />
-    <ListView
-        android:id="@+id/excuses_list"
-        android:layout_width="match_parent"
-   	 	android:layout_height="fill_parent"
-   	 	android:layout_weight="1"
-   	 	android:divider="@color/off_white"
-    	android:dividerHeight="1sp"
-    	android:fadeScrollbars="false" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/comment_title"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:textColor="@color/off_white" />
-    <EditText
-        android:id="@+id/comment_box"
-        android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_gravity="center_horizontal"
-	    android:textSize="15sp"
-        android:textStyle="bold"
-	    android:textColor="@color/off_white"
-	    android:maxLength="255"
-	    android:hint="@string/comment_hint" />
-    <Button 
+	    android:layout_height="0dip"
+	    android:layout_weight="1"
+	    android:fadeScrollbars="false" >
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		    xmlns:tools="http://schemas.android.com/tools"
+		    android:orientation="vertical" 
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:background="@color/background_color"
+		    android:padding="10dip" >
+		    <TextView
+			    android:id="@+id/total_sleep"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:gravity="center_horizontal"
+			    android:textSize="25sp"
+			    android:textStyle="bold"
+			    android:textColor="@color/off_white" />
+		    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			    xmlns:tools="http://schemas.android.com/tools"
+			    android:orientation="horizontal" 
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content" >
+			    <TextView
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="1"
+			        android:text="@string/sleep"
+			        android:textSize="15sp"
+			        android:textStyle="bold"
+			        android:textColor="@color/off_white" />
+			    <TextView
+			        android:id="@+id/asleep_time"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="1"
+			        android:paddingLeft="10dip"
+			        android:textSize="15sp"
+			        android:textColor="@color/off_white" />
+			    <Button
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="0"
+			        android:text="@string/edit"
+			        android:textColor="@color/off_white"
+			        android:onClick="onClickEditSleep" />
+		    </LinearLayout>
+		    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			    xmlns:tools="http://schemas.android.com/tools"
+			    android:orientation="horizontal" 
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content" >
+			    <TextView
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="1"
+			        android:text="@string/wake"
+			        android:textSize="15sp"
+			        android:textStyle="bold"
+			        android:textColor="@color/off_white" />
+			    <TextView
+			        android:id="@+id/awake_time"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="1"
+			        android:paddingLeft="10dip"
+			        android:textSize="15sp"
+			        android:textColor="@color/off_white" />
+			    <Button
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="0"
+			        android:text="@string/edit"
+			        android:textColor="@color/off_white"
+			        android:onClick="onClickEditWake" />
+		    </LinearLayout>
+		    <View
+		        android:layout_width="match_parent"
+		        android:layout_height="1sp"
+		        android:background="@color/off_white" />
+		    <TextView
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:gravity="center_horizontal"
+			    android:text="@string/rating_header"
+			    android:textSize="25sp"
+			    android:textStyle="bold"
+			    android:textColor="@color/off_white" />
+		    <RatingBar
+			    android:id="@+id/rating_bar"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_gravity="center_horizontal"
+			    android:numStars="5"
+			    android:stepSize="1" />
+		    <View
+		        android:layout_width="match_parent"
+		        android:layout_height="1sp"
+		        android:background="@color/off_white" />
+		    <TextView
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:gravity="center_horizontal"
+			    android:text="@string/excuse_header"
+			    android:textSize="25sp"
+			    android:textStyle="bold"
+			    android:textColor="@color/off_white" />
+		    <TextView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/excuse_prompt"
+		        android:textSize="15sp"
+		        android:textStyle="bold"
+		        android:textColor="@color/off_white" />
+		    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			   	xmlns:tools="http://schemas.android.com/tools"
+			   	android:id="@+id/excuse1"
+			   	android:orientation="horizontal" 
+			   	android:layout_width="match_parent"
+			   	android:layout_height="wrap_content"
+			   	android:padding="10dip"
+			   	android:baselineAligned="false"
+			   	android:clickable="true"
+			   	android:onClick="onClickExcuse" >
+				<CheckBox
+				    android:id="@+id/excuse_checkbox1"
+				    android:layout_width="wrap_content"
+			   		android:layout_height="wrap_content"
+			   		android:clickable="false"
+			   		android:focusable="false"
+			   		android:focusableInTouchMode="false"
+			   		android:textColor="@color/off_white" />
+				<TextView
+				    android:layout_width="match_parent"
+			   		android:layout_height="wrap_content"
+			   		android:layout_gravity="center_vertical"
+			   		android:clickable="false"
+			   		android:text="@string/excuse1"
+			   		android:textSize="15sp"
+					android:textStyle="bold"
+			   		android:textColor="@color/off_white" />
+			</LinearLayout>
+			<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			   	xmlns:tools="http://schemas.android.com/tools"
+			   	android:id="@+id/excuse2"
+			   	android:orientation="horizontal" 
+			   	android:layout_width="match_parent"
+			   	android:layout_height="wrap_content"
+			   	android:padding="10dip"
+			   	android:baselineAligned="false"
+			   	android:clickable="true"
+			   	android:onClick="onClickExcuse" >
+				<CheckBox
+				    android:id="@+id/excuse_checkbox2"
+				    android:layout_width="wrap_content"
+			   		android:layout_height="wrap_content"
+			   		android:clickable="false"
+			   		android:focusable="false"
+			   		android:focusableInTouchMode="false"
+			   		android:textColor="@color/off_white" />
+				<TextView
+				    android:layout_width="match_parent"
+			   		android:layout_height="wrap_content"
+			   		android:layout_gravity="center_vertical"
+			   		android:clickable="false"
+			   		android:text="@string/excuse2"
+			   		android:textSize="15sp"
+					android:textStyle="bold"
+			   		android:textColor="@color/off_white" />
+			</LinearLayout>
+			<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			   	xmlns:tools="http://schemas.android.com/tools"
+			   	android:id="@+id/excuse3"
+			   	android:orientation="horizontal" 
+			   	android:layout_width="match_parent"
+			   	android:layout_height="wrap_content"
+			   	android:padding="10dip"
+			   	android:baselineAligned="false"
+			   	android:clickable="true"
+			   	android:onClick="onClickExcuse" >
+				<CheckBox
+				    android:id="@+id/excuse_checkbox3"
+				    android:layout_width="wrap_content"
+			   		android:layout_height="wrap_content"
+			   		android:clickable="false"
+			   		android:focusable="false"
+			   		android:focusableInTouchMode="false"
+			   		android:textColor="@color/off_white" />
+				<TextView
+				    android:layout_width="match_parent"
+			   		android:layout_height="wrap_content"
+			   		android:layout_gravity="center_vertical"
+			   		android:clickable="false"
+			   		android:text="@string/excuse3"
+			   		android:textSize="15sp"
+					android:textStyle="bold"
+			   		android:textColor="@color/off_white" />
+			</LinearLayout>
+			<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			   	xmlns:tools="http://schemas.android.com/tools"
+			   	android:id="@+id/excuse4"
+			   	android:orientation="horizontal" 
+			   	android:layout_width="match_parent"
+			   	android:layout_height="wrap_content"
+			   	android:padding="10dip"
+			   	android:baselineAligned="false"
+			   	android:clickable="true"
+			   	android:onClick="onClickExcuse" >
+				<CheckBox
+				    android:id="@+id/excuse_checkbox4"
+				    android:layout_width="wrap_content"
+			   		android:layout_height="wrap_content"
+			   		android:clickable="false"
+			   		android:focusable="false"
+			   		android:focusableInTouchMode="false"
+			   		android:textColor="@color/off_white" />
+				<TextView
+				    android:layout_width="match_parent"
+			   		android:layout_height="wrap_content"
+			   		android:layout_gravity="center_vertical"
+			   		android:clickable="false"
+			   		android:text="@string/excuse4"
+			   		android:textSize="15sp"
+					android:textStyle="bold"
+			   		android:textColor="@color/off_white" />
+			</LinearLayout>
+			<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			   	xmlns:tools="http://schemas.android.com/tools"
+			   	android:id="@+id/excuse5"
+			   	android:orientation="horizontal" 
+			   	android:layout_width="match_parent"
+			   	android:layout_height="wrap_content"
+			   	android:padding="10dip"
+			   	android:baselineAligned="false"
+			   	android:clickable="true"
+			   	android:onClick="onClickExcuse" >
+				<CheckBox
+				    android:id="@+id/excuse_checkbox5"
+				    android:layout_width="wrap_content"
+			   		android:layout_height="wrap_content"
+			   		android:clickable="false"
+			   		android:focusable="false"
+			   		android:focusableInTouchMode="false"
+			   		android:textColor="@color/off_white" />
+				<TextView
+				    android:layout_width="match_parent"
+			   		android:layout_height="wrap_content"
+			   		android:layout_gravity="center_vertical"
+			   		android:clickable="false"
+			   		android:text="@string/excuse5"
+			   		android:textSize="15sp"
+					android:textStyle="bold"
+			   		android:textColor="@color/off_white" />
+			</LinearLayout>
+			<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			   	xmlns:tools="http://schemas.android.com/tools"
+			   	android:id="@+id/excuse6"
+			   	android:orientation="horizontal" 
+			   	android:layout_width="match_parent"
+			   	android:layout_height="wrap_content"
+			   	android:padding="10dip"
+			   	android:baselineAligned="false"
+			   	android:clickable="true"
+			   	android:onClick="onClickExcuse" >
+				<CheckBox
+				    android:id="@+id/excuse_checkbox6"
+				    android:layout_width="wrap_content"
+			   		android:layout_height="wrap_content"
+			   		android:clickable="false"
+			   		android:focusable="false"
+			   		android:focusableInTouchMode="false"
+			   		android:textColor="@color/off_white" />
+				<TextView
+				    android:layout_width="match_parent"
+			   		android:layout_height="wrap_content"
+			   		android:layout_gravity="center_vertical"
+			   		android:clickable="false"
+			   		android:text="@string/excuse6"
+			   		android:textSize="15sp"
+					android:textStyle="bold"
+			   		android:textColor="@color/off_white" />
+			</LinearLayout>
+			<View
+		        android:layout_width="match_parent"
+		        android:layout_height="1sp"
+		        android:background="@color/off_white" />
+		    <TextView
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:gravity="center_horizontal"
+			    android:text="@string/comment_header"
+			    android:textSize="25sp"
+			    android:textStyle="bold"
+			    android:textColor="@color/off_white" />
+		    <EditText
+		        android:id="@+id/comment_box"
+		        android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_gravity="center_horizontal"
+			    android:textSize="15sp"
+		        android:textStyle="bold"
+			    android:textColor="@color/off_white"
+			    android:maxLength="255"
+			    android:hint="@string/comment_hint" />
+		</LinearLayout>
+	</ScrollView>
+	<Button 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/save"

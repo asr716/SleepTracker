@@ -25,11 +25,11 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 public class DataActivity extends Activity {
-	public final static String ITEM_ASLEEP_TIME_LONG = "asleep_time_long";
-	public final static String ITEM_ASLEEP_TIME = "asleep_time";
-	public final static String ITEM_AWAKE_TIME = "awake_time";
-	public final static String ITEM_TYPE_OF_SLEEP = "type_of_sleep";
-	public final static String ITEM_TOTAL_SLEEP = "total_sleep";
+	protected final static String ITEM_ASLEEP_TIME_LONG = "asleep_time_long";
+	protected final static String ITEM_ASLEEP_TIME = "asleep_time";
+	protected final static String ITEM_AWAKE_TIME = "awake_time";
+	protected final static String ITEM_TYPE_OF_SLEEP = "type_of_sleep";
+	protected final static String ITEM_TOTAL_SLEEP = "total_sleep";
 	private final static String[] ITEMS = {ITEM_ASLEEP_TIME, ITEM_AWAKE_TIME, ITEM_TYPE_OF_SLEEP, ITEM_TOTAL_SLEEP};
 	private final static int[] ITEM_IDS = {R.id.asleep_time, R.id.awake_time, R.id.type_of_sleep, R.id.total_sleep};
 	
@@ -79,8 +79,8 @@ public class DataActivity extends Activity {
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 				final long asleepTime = Long.valueOf((String) mDataList.get(position).get(ITEM_ASLEEP_TIME_LONG));
 				AlertDialog.Builder deleteDialogBuilder = new AlertDialog.Builder(mContext);
-				deleteDialogBuilder.setTitle("Delete Entry");
-				deleteDialogBuilder.setMessage("Would you like to delete this entry?");
+				deleteDialogBuilder.setTitle(getResources().getString(R.string.delete_dialog_title));
+				deleteDialogBuilder.setMessage(getResources().getString(R.string.delete_dialog_message));
 				deleteDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						mSleepLogHelper.deleteEntry(asleepTime);
@@ -100,6 +100,10 @@ public class DataActivity extends Activity {
 		});
 	}
 	
+	/*
+	 * Method queries the SQLiteDatabase for all of the sleep logs.  It sifts through the cursor to grab the
+	 * necessary information for each sleep log, puts the items in a List, and sets the ListView adapter.
+	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
