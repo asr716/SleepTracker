@@ -43,7 +43,6 @@
 	    android:layout_height="wrap_content"
 	    android:gravity="center"
 	    android:layout_weight="1"
-		android:background="@drawable/border"
 	    android:textSize="20sp"
 	    android:textColor="@color/off_white" />
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

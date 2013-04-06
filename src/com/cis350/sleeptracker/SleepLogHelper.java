@@ -14,21 +14,21 @@ public class SleepLogHelper {
 	private static final String TABLE_NAME = "sleep_log";
 	
 	// COLUMNS
-	public static final String ASLEEP_TIME = "asleep_time";
-	public static final String AWAKE_TIME = "awake_time";
-	public static final String NAP = "nap";
-	public static final String RATING = "rating";
-	public static final String CAFFEINE = "caffeine";
-	public static final String ALCOHOL = "alcohol";
-	public static final String NICOTINE = "nicotine";
-	public static final String SUGAR = "sugar";
-	public static final String SCREEN_TIME = "screen_time";
-	public static final String EXERCISE = "exercise";
-	public static final String COMMENTS = "comments";
+	protected static final String ASLEEP_TIME = "asleep_time";
+	protected static final String AWAKE_TIME = "awake_time";
+	protected static final String NAP = "nap";
+	protected static final String RATING = "rating";
+	protected static final String CAFFEINE = "caffeine";
+	protected static final String ALCOHOL = "alcohol";
+	protected static final String NICOTINE = "nicotine";
+	protected static final String SUGAR = "sugar";
+	protected static final String SCREEN_TIME = "screen_time";
+	protected static final String EXERCISE = "exercise";
+	protected static final String COMMENTS = "comments";
 
-	public static final String[] COLUMNS = {ASLEEP_TIME, AWAKE_TIME, NAP, RATING, CAFFEINE, ALCOHOL,
+	protected static final String[] COLUMNS = {ASLEEP_TIME, AWAKE_TIME, NAP, RATING, CAFFEINE, ALCOHOL,
 		NICOTINE, SUGAR, SCREEN_TIME, EXERCISE, COMMENTS};
-	public static final String[] EXCUSES = {CAFFEINE, ALCOHOL, NICOTINE, SUGAR, SCREEN_TIME, EXERCISE};
+	protected static final String[] EXCUSES = {CAFFEINE, ALCOHOL, NICOTINE, SUGAR, SCREEN_TIME, EXERCISE};
 	
 	private static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME + " (" +
 			ASLEEP_TIME + " LONG PRIMARY KEY, " +

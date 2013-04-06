@@ -12,10 +12,9 @@
     <string name="wake">WAKE</string>
     <string name="pending">Pending&#8230;</string>
     <string name="comment_hint">Comments on sleep</string>
-    <string name="comment_title">Additional comments:</string>
     <string name="edit">Edit</string>
     <string name="nap">Nap</string>
-    <string name="night_sleep">Nighttime Sleep</string>
+    <string name="night_sleep">Sleep</string>
     <string name="edit_time">Edit Time/Date</string>
     <string name="save">Save</string>
 
@@ -24,11 +23,24 @@
 	<string name="tips">Use your bed primarily for sleeping (or other obvious bed-related activities). Avoid doing schoolwork, watching t.v. or using the computer.:Go to bed and wake up at approximately the same times. This helps your body\'s internal clock get tired and more awake at appropriate times.:Make sure your bed and bedroom is a comfortable place! Do you need more mattress or pillow support? Use ear plugs, a white noise machine, and/or a night mask if needed.:Do something relaxing in the 30 minutes leading up to bedtime. Try taking a warm shower, reading, or listening to music.:Avoid consuming alcohol or using tobacco in the 4 hours before bed. Alcohol tends to make you sleepy but actually interferes with deep sleep. Tobacco acts as a stimulant.:Avoid caffeine later than mid-day.:Exercise! Aim for earlier in the day as exercise in the 4 hours before bedtime can actually wake your body up.:Turn your clock away from your bed. If you can\'t fall asleep then get up and do a quiet activity until you start to feel sleepy.:Decrease stress in whatever ways possible! If you lie awake thinking at night, keep a  journal near bed. Make a \"to-do\" list or write down any concerns you have. The journal is place to keep these things so they can\'t distract you overnight.</string>
     
 	<!-- Excuses strings -->
-	<string name="excuse_header">I had________before bed (check all that apply):</string>
+	<string name="excuse_prompt">I had________before bed (check all that apply):</string>
 	<string name="excuse1">Caffeine (coffee, tea, soda, etc)</string>
 	<string name="excuse2">Alcohol</string>
 	<string name="excuse3">Nicotine</string>
 	<string name="excuse4">Sugar (candy, soda, etc)</string>
 	<string name="excuse5">Screen Time (PC, iPad, TV, Kindle, etc)</string>
 	<string name="excuse6">Exercise</string>
+	
+	<!-- LogActivity Headings -->
+	<string name="rating_header">Rate Your Sleep</string>
+	<string name="excuse_header">Sleep Inhibitors</string>
+	<string name="comment_header">Additional Comments</string>
+	
+	<!-- MainActivity dialog strings -->
+	<string name="podcast_dialog_title">Podcast</string>
+	<string name="podcast_dialog_message">Would you like to listen to the Podcast?</string>
+	<string name="nap_dialog_title">Nap or Sleep</string>
+	<string name="nap_dialog_message">Are you taking a nap or going to sleep for the night?</string>
+	<string name="delete_dialog_title">Delete Entry</string>
+	<string name="delete_dialog_message">Would you like to delete this entry?</string>
 </resources>
