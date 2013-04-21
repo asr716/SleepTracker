@@ -67,48 +67,53 @@ public class ChartActivity extends Activity{
 		super.onResume();
         TabHost tabs = (TabHost)findViewById(R.id.tabHost);
         tabs.setup();
+        
         if (wChart == null) {
             addData(WEEK, wNapSeries, wTotalSleepSeries, wDataset);
-	        TabHost.TabSpec spec1 = tabs.newTabSpec("weekly");
-	        spec1.setIndicator("Weekly");
-	        spec1.setContent(new TabHost.TabContentFactory(){
-				public View createTabContent(String tag) {
-					wChart = ChartFactory.getBarChartView(ChartActivity.this, wDataset, wRenderer, Type.STACKED);
-					return wChart;
-				}
-	        });
-	        tabs.addTab(spec1); 	
+            wChart = ChartFactory.getBarChartView(ChartActivity.this, wDataset, wRenderer, Type.STACKED);
         } else 
         	wChart.repaint();
    
         if (mChart == null){
         	addData(MONTH, mNapSeries, mTotalSleepSeries, mDataset);
-	        TabHost.TabSpec spec2 = tabs.newTabSpec("monthly");
-	        spec2.setIndicator("Monthly");
-	        spec2.setContent(new TabHost.TabContentFactory(){
-				public View createTabContent(String tag) {
-					mChart = ChartFactory.getBarChartView(ChartActivity.this, mDataset, mRenderer, Type.STACKED);
-					return mChart;
-				}
-	        });
-	        tabs.addTab(spec2);  
+        	mChart = ChartFactory.getBarChartView(ChartActivity.this, mDataset, mRenderer, Type.STACKED);
         } else
         	mChart.repaint();
         
         if (yChart == null){
         	addYearlyData(yTotalSleepSeries, yDataset);
-	        TabHost.TabSpec spec3 = tabs.newTabSpec("yearly");
-	        spec3.setIndicator("Yearly");
-	        spec3.setContent(new TabHost.TabContentFactory(){
-				public View createTabContent(String tag) {
-					yChart = ChartFactory.getBarChartView(ChartActivity.this, yDataset, yRenderer, Type.STACKED);
-					return yChart;
-				}
-	        });
-	        tabs.addTab(spec3);  
+        	yChart = ChartFactory.getBarChartView(ChartActivity.this, yDataset, yRenderer, Type.STACKED);
+	          
         } else
         	yChart.repaint();
-    
+        
+        tabs.clearAllTabs();
+        TabHost.TabSpec spec1 = tabs.newTabSpec("weekly");
+        spec1.setIndicator("Weekly");
+        spec1.setContent(new TabHost.TabContentFactory(){
+			public View createTabContent(String tag) {
+				return wChart;
+			}
+        });
+        tabs.addTab(spec1);
+        
+        TabHost.TabSpec spec2 = tabs.newTabSpec("monthly");
+        spec2.setIndicator("Monthly");
+        spec2.setContent(new TabHost.TabContentFactory(){
+			public View createTabContent(String tag) {
+				return mChart;
+			}
+        });
+        tabs.addTab(spec2); 
+        
+        TabHost.TabSpec spec3 = tabs.newTabSpec("yearly");
+        spec3.setIndicator("Yearly");
+        spec3.setContent(new TabHost.TabContentFactory(){
+			public View createTabContent(String tag) {
+				return yChart;
+			}
+        });
+        tabs.addTab(spec3);
     }
 	
 	private void initChart(XYMultipleSeriesRenderer renderer, int numEntries, String title, boolean ifYear) {
