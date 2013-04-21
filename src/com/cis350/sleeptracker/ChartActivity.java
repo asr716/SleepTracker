@@ -2,6 +2,7 @@ package com.cis350.sleeptracker;
 
 import java.text.DecimalFormat;
 
+
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
 import org.achartengine.chart.BarChart.Type;
@@ -16,47 +17,39 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Paint.Align;
 import android.view.Menu;
-import android.widget.LinearLayout;
+import android.view.View;
+import android.widget.TabHost;
 
-public class ChartActivity extends Activity {
+
+public class ChartActivity extends Activity{
 	private static final long DAY_IN_MILLISECONDS = 86400000;
-	private static final int HOUR_IN_MILLISECONDS = 3600000;
+	private static final long HOUR_IN_MILLISECONDS = 3600000;
+	private static final long MONTH_IN_MILLISECONDS = 30 * DAY_IN_MILLISECONDS;
 	private static final int WEEK = 7;
+	private static final int MONTH = 30;
+	private static final int YEAR = 12;
 
-	private long today;
-	private GraphicalView mChart;
+	private long today, thisMonth;
+	private GraphicalView wChart, mChart, yChart;
     private XYMultipleSeriesDataset mDataset = new XYMultipleSeriesDataset();
+    private XYMultipleSeriesDataset wDataset = new XYMultipleSeriesDataset();
+    private XYMultipleSeriesDataset yDataset = new XYMultipleSeriesDataset();
     private XYMultipleSeriesRenderer mRenderer = new XYMultipleSeriesRenderer();
-    private XYSeries mTotalSleepSeries, mNapSeries;
-    private XYSeriesRenderer mTotalRenderer, mNapRenderer;
+    private XYMultipleSeriesRenderer wRenderer = new XYMultipleSeriesRenderer();
+    private XYMultipleSeriesRenderer yRenderer = new XYMultipleSeriesRenderer();
+    private XYSeries mTotalSleepSeries, mNapSeries, wTotalSleepSeries, wNapSeries, yTotalSleepSeries;
+    private XYSeriesRenderer totalRenderer, napRenderer;
     
     private SleepLogHelper mSleepLogHelper;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		mRenderer.setMargins(new int[]{30,50,60,0});
-        mRenderer.setLegendTextSize(24);
-        mRenderer.setZoomRate(0.2f); 
-        mRenderer.setZoomEnabled(false, false); 
-        mRenderer.setBarSpacing(0.3f); 
-        mRenderer.setXAxisMin(0); 
-        mRenderer.setXAxisMax(8);
-        mRenderer.setYAxisMin(0);
-        mRenderer.setYAxisMax(24);
-        mRenderer.setAxisTitleTextSize(20); 
-        mRenderer.setAxesColor(Color.BLACK); 
-        mRenderer.setGridColor(Color.GRAY); 
-        mRenderer.setShowGridX(true); 
-        mRenderer.setXLabels(0);
-        mRenderer.setLabelsColor(Color.BLACK); 
-        mRenderer.setLabelsTextSize(20);
-        mRenderer.setXLabelsColor(Color.BLACK); 
-        mRenderer.setXTitle("Days"); 
-        mRenderer.setYLabelsAlign(Align.RIGHT);
-        mRenderer.setYLabelsColor(0, Color.BLACK);
-        mRenderer.setYTitle("Hours");
-        
-		today = System.currentTimeMillis()/DAY_IN_MILLISECONDS*DAY_IN_MILLISECONDS;
+		initChart(mRenderer, MONTH, "Days", false);
+		initChart(wRenderer, WEEK, "Days", false);
+		initChart(yRenderer, YEAR, "Months", true);
+		
+		today = (System.currentTimeMillis()/DAY_IN_MILLISECONDS*DAY_IN_MILLISECONDS) + (8*HOUR_IN_MILLISECONDS);
+		thisMonth = (System.currentTimeMillis()/MONTH_IN_MILLISECONDS*MONTH_IN_MILLISECONDS);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chart);
 		MainActivity.customizeActionBar(this);
@@ -72,53 +65,114 @@ public class ChartActivity extends Activity {
 	
 	protected void onResume() {
 		super.onResume();
-        LinearLayout layout = (LinearLayout) findViewById(R.id.chart);
-        if (mChart == null) {
-            initChart();
-            addData();
-            mChart = ChartFactory.getBarChartView(this, mDataset, mRenderer, Type.STACKED);
-            layout.addView(mChart);
-        } else {
-        	addData();
-            mChart.repaint();
-        }
+        TabHost tabs = (TabHost)findViewById(R.id.tabHost);
+        tabs.setup();
+        
+        if (wChart == null) {
+            addData(WEEK, wNapSeries, wTotalSleepSeries, wDataset);
+            wChart = ChartFactory.getBarChartView(ChartActivity.this, wDataset, wRenderer, Type.STACKED);
+        } else 
+        	wChart.repaint();
+   
+        if (mChart == null){
+        	addData(MONTH, mNapSeries, mTotalSleepSeries, mDataset);
+        	mChart = ChartFactory.getBarChartView(ChartActivity.this, mDataset, mRenderer, Type.STACKED);
+        } else
+        	mChart.repaint();
+        
+        if (yChart == null){
+        	addYearlyData(yTotalSleepSeries, yDataset);
+        	yChart = ChartFactory.getBarChartView(ChartActivity.this, yDataset, yRenderer, Type.STACKED);
+	          
+        } else
+        	yChart.repaint();
+        
+        tabs.clearAllTabs();
+        TabHost.TabSpec spec1 = tabs.newTabSpec("weekly");
+        spec1.setIndicator("Weekly");
+        spec1.setContent(new TabHost.TabContentFactory(){
+			public View createTabContent(String tag) {
+				return wChart;
+			}
+        });
+        tabs.addTab(spec1);
+        
+        TabHost.TabSpec spec2 = tabs.newTabSpec("monthly");
+        spec2.setIndicator("Monthly");
+        spec2.setContent(new TabHost.TabContentFactory(){
+			public View createTabContent(String tag) {
+				return mChart;
+			}
+        });
+        tabs.addTab(spec2); 
+        
+        TabHost.TabSpec spec3 = tabs.newTabSpec("yearly");
+        spec3.setIndicator("Yearly");
+        spec3.setContent(new TabHost.TabContentFactory(){
+			public View createTabContent(String tag) {
+				return yChart;
+			}
+        });
+        tabs.addTab(spec3);
     }
 	
-	private void initChart() {
-        mTotalSleepSeries = new XYSeries("Hours Slept in the Past Week");
-        mNapSeries = new XYSeries("Naps in the Past Week");
-        mDataset.addSeries(mTotalSleepSeries);
-        mDataset.addSeries(mNapSeries);
+	private void initChart(XYMultipleSeriesRenderer renderer, int numEntries, String title, boolean ifYear) {
+		renderer.setMarginsColor(Color.BLUE);
+		renderer.setXTitle(title); 
+		renderer.setYTitle("Hours");
+        renderer.setLegendTextSize(24);
+        renderer.setZoomRate(0.2f); 
+        renderer.setZoomEnabled(false, false); 
+        renderer.setBarSpacing(0.3f); 
+        renderer.setYAxisMin(0);
+        renderer.setYAxisMax(24);
+        renderer.setAxisTitleTextSize(50); 
+        renderer.setAxesColor(Color.BLACK); 
+        renderer.setGridColor(Color.GRAY); 
+        renderer.setShowGridX(true);
+        renderer.setLabelsColor(Color.BLACK); 
+        renderer.setLabelsTextSize(20);
+        renderer.setXLabelsColor(Color.BLACK); 
+        renderer.setYLabelsAlign(Align.RIGHT);
+        renderer.setYLabelsColor(0, Color.BLACK);
         
-        mTotalRenderer = new XYSeriesRenderer();
-        mTotalRenderer.setColor(Color.rgb(220, 80, 80));
-        mTotalRenderer.setFillPoints(true);
-        mTotalRenderer.setLineWidth(2);
-        mTotalRenderer.setChartValuesTextAlign(Align.CENTER);
-        mTotalRenderer.setChartValuesTextSize(18);
-        mTotalRenderer.setDisplayChartValues(true);
+        renderer.setXAxisMin(0); 
+        renderer.setXAxisMax(numEntries + 1);
         
-        mNapRenderer = new XYSeriesRenderer();
-        mNapRenderer.setColor(Color.rgb(130, 130, 230));
-        mNapRenderer.setFillPoints(true);
-        mNapRenderer.setLineWidth(2);
-        mNapRenderer.setChartValuesTextAlign(Align.CENTER);
-        mNapRenderer.setChartValuesTextSize(18);
-        mNapRenderer.setDisplayChartValues(true);
-        
-        mRenderer.addSeriesRenderer(mTotalRenderer);
-        mRenderer.addSeriesRenderer(mNapRenderer);
+        totalRenderer = new XYSeriesRenderer();
+        totalRenderer.setColor(Color.rgb(220, 80, 80));
+        totalRenderer.setFillPoints(true);
+        totalRenderer.setLineWidth(2);
+        totalRenderer.setChartValuesTextAlign(Align.CENTER);
+        totalRenderer.setChartValuesTextSize(18);
+        totalRenderer.setDisplayChartValues(true);
+        if (!ifYear) {
+	        napRenderer = new XYSeriesRenderer();
+	        napRenderer.setColor(Color.rgb(130, 130, 230));
+	        napRenderer.setFillPoints(true);
+	        napRenderer.setLineWidth(2);
+	        napRenderer.setChartValuesTextAlign(Align.CENTER);
+	        napRenderer.setChartValuesTextSize(18);
+	        napRenderer.setDisplayChartValues(true);
+	        renderer.addSeriesRenderer(napRenderer);
+        } 
+        renderer.addSeriesRenderer(totalRenderer);
         
     }
-	private void addData() {
+	
+	private void addData(int numOfPoints, XYSeries nap, XYSeries total, XYMultipleSeriesDataset dataset) {
 	/*	Adds data starting yesterday
 	 */
+		total = new XYSeries("Total Sleep");
+	    nap = new XYSeries("Nightime Sleep");
+	    dataset.addSeries(total);
+	    dataset.addSeries(nap);
 		DecimalFormat df = new DecimalFormat("0.00");
-		long startDay = today - 8*DAY_IN_MILLISECONDS;
-		long endDay = today - 7*DAY_IN_MILLISECONDS;
-		int numEntries = mSleepLogHelper.numEntries();
+		long startDay = today - (numOfPoints+2)*DAY_IN_MILLISECONDS;
+		long endDay = today - (numOfPoints+1)*DAY_IN_MILLISECONDS;
 		int count = 1;
-		while (count<WEEK+1 && numEntries > 0){
+		
+		while (count<numOfPoints+1){
 			startDay = startDay + DAY_IN_MILLISECONDS;
 			endDay = endDay + DAY_IN_MILLISECONDS;
 			double totalHoursSlept = 0;
@@ -134,23 +188,36 @@ public class ChartActivity extends Activity {
 						totalHoursSlept += totalSleep /HOUR_IN_MILLISECONDS;
 						napHoursSlept += totalSleep / HOUR_IN_MILLISECONDS;
 					}
-					else {
+					else 
 						totalHoursSlept += totalSleep /HOUR_IN_MILLISECONDS;
-					}
 					
 					cursor.moveToNext();
 				}
 				String formate = df.format(totalHoursSlept);
 				double finalValue = Double.parseDouble(formate);
-				mTotalSleepSeries.add(count, finalValue);
+				total.add(count, finalValue);
 				formate = df.format(napHoursSlept);
 				finalValue = Double.parseDouble(formate);
-				mNapSeries.add(count, finalValue);
+				nap.add(count, finalValue);
 			}
 			count++;
-			numEntries--;
 		}
     }
+	private void addYearlyData(XYSeries total, XYMultipleSeriesDataset dataset){
+		total = new XYSeries("Total Sleep");
+		long startMonth = thisMonth - 12 * MONTH_IN_MILLISECONDS;
+		long endMonth = thisMonth - 11 * MONTH_IN_MILLISECONDS;
+		Cursor cursor = mSleepLogHelper.queryLogAvgMonth(startMonth, endMonth);
+		for (int i=1; i<13; i++){
+			if (cursor != null){
+				cursor.moveToFirst();
+				total.add(i, cursor.getLong(0));
+			}
+			startMonth = startMonth + MONTH_IN_MILLISECONDS;
+			endMonth = endMonth + MONTH_IN_MILLISECONDS;
+		}
+		dataset.addSeries(total);
+	}
 	
 	public XYSeries getTotalSeries() {
 		return mTotalSleepSeries;
