@@ -10,12 +10,13 @@ import android.util.Log;
 
 public class SleepLogHelper {
 	private static final String TAG = "SleepLogHelper";
-	private static final int TABLE_VERSION = 3;
+	private static final int TABLE_VERSION = 4;
 	private static final String TABLE_NAME = "sleep_log";
 	
 	// COLUMNS
 	protected static final String ASLEEP_TIME = "asleep_time";
 	protected static final String AWAKE_TIME = "awake_time";
+	protected static final String TIME_SLEPT = "time_slept";
 	protected static final String NAP = "nap";
 	protected static final String RATING = "rating";
 	protected static final String CAFFEINE = "caffeine";
@@ -26,13 +27,14 @@ public class SleepLogHelper {
 	protected static final String EXERCISE = "exercise";
 	protected static final String COMMENTS = "comments";
 
-	protected static final String[] COLUMNS = {ASLEEP_TIME, AWAKE_TIME, NAP, RATING, CAFFEINE, ALCOHOL,
+	protected static final String[] COLUMNS = {ASLEEP_TIME, AWAKE_TIME, TIME_SLEPT, NAP, RATING, CAFFEINE, ALCOHOL,
 		NICOTINE, SUGAR, SCREEN_TIME, EXERCISE, COMMENTS};
 	protected static final String[] EXCUSES = {CAFFEINE, ALCOHOL, NICOTINE, SUGAR, SCREEN_TIME, EXERCISE};
 	
 	private static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME + " (" +
 			ASLEEP_TIME + " LONG PRIMARY KEY, " +
 			AWAKE_TIME + " LONG, " +
+			TIME_SLEPT + " LONG, " +
 			NAP + " INT, " +
 			RATING + " INT, " +
 			CAFFEINE + " INT, " +
@@ -77,6 +79,7 @@ public class SleepLogHelper {
 		ContentValues values = new ContentValues();
 		values.put(ASLEEP_TIME, asleepTime);
 		values.put(AWAKE_TIME, awakeTime);
+		values.put(TIME_SLEPT, (awakeTime - asleepTime));
 		if (isNap) {
 			values.put(NAP, 1);
 		} else {
@@ -94,6 +97,10 @@ public class SleepLogHelper {
 	public boolean updateAsleepTime(long asleepTime, long newAsleepTime) {
 		ContentValues values = new ContentValues();
 		values.put(ASLEEP_TIME, newAsleepTime);
+		Cursor temp = queryLog(asleepTime);
+		temp.moveToFirst();
+		long awakeTime = temp.getLong(temp.getColumnIndex(SleepLogHelper.AWAKE_TIME));
+		values.put(TIME_SLEPT, awakeTime - newAsleepTime);
 		String whereClause = ASLEEP_TIME + "=" + asleepTime;
 		return (mDb.update(TABLE_NAME, values, whereClause, null) > 0);
 	}
@@ -101,6 +108,7 @@ public class SleepLogHelper {
 	public boolean updateAwakeTime(long asleepTime, long awakeTime) {
 		ContentValues values = new ContentValues();
 		values.put(AWAKE_TIME, awakeTime);
+		values.put(TIME_SLEPT, awakeTime - asleepTime);
 		String whereClause = ASLEEP_TIME + "=" + asleepTime;
 		return (mDb.update(TABLE_NAME, values, whereClause, null) > 0);
 	}
@@ -145,7 +153,10 @@ public class SleepLogHelper {
 		String selection = ASLEEP_TIME + ">" + startDay + " AND " + ASLEEP_TIME + "<" + endDay;
 		return mDb.query(TABLE_NAME, COLUMNS, selection, null, null, null, null);
 	}
-	
+	public Cursor queryLogAvgMonth(long startDay, long endDay){
+		String rawSelection = "SELECT AVG(" + TIME_SLEPT + ") FROM " + TABLE_NAME + " WHERE " + NAP + "<1 AND (" + ASLEEP_TIME + " BETWEEN " + startDay + " AND " + endDay + ")";
+		return mDb.rawQuery(rawSelection, null);
+	}
 	public int numEntries(){
 		String selection = NAP + "=0";
 		Cursor temp = mDb.query(TABLE_NAME, COLUMNS, selection, null, null, null, null);
