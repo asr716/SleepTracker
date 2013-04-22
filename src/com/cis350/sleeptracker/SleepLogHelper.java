@@ -149,12 +149,23 @@ public class SleepLogHelper {
 		String selection = ASLEEP_TIME + "=" + asleepTime;
 		return mDb.query(TABLE_NAME, COLUMNS, selection, null, null, null, null);
 	}
+	
 	public Cursor queryLogDay(long startDay, long endDay) {
 		String selection = ASLEEP_TIME + ">" + startDay + " AND " + ASLEEP_TIME + "<" + endDay;
 		return mDb.query(TABLE_NAME, COLUMNS, selection, null, null, null, null);
 	}
+	
 	public Cursor queryLogAvgMonth(long startDay, long endDay){
-		String rawSelection = "SELECT AVG(" + TIME_SLEPT + ") FROM " + TABLE_NAME + " WHERE " + NAP + "<1 AND (" + ASLEEP_TIME + " BETWEEN " + startDay + " AND " + endDay + ")";
+		String rawSelection = "SELECT AVG(" + TIME_SLEPT + ") FROM " + TABLE_NAME + " WHERE " + NAP + "=0 AND (" + ASLEEP_TIME + " BETWEEN " + startDay + " AND " + endDay + ")";
+		return mDb.rawQuery(rawSelection, null);
+	}
+	
+	public Cursor queryLogExcusesTime(String excuse){
+		String rawSelection = "SELECT AVG(" + TIME_SLEPT + ") FROM " + TABLE_NAME + " WHERE " + excuse + ">0";
+		return mDb.rawQuery(rawSelection, null);
+	}
+	public Cursor queryLogExcusesQuality(String excuse){
+		String rawSelection = "SELECT AVG(" + RATING + ") FROM " + TABLE_NAME + " WHERE " + excuse + ">0";
 		return mDb.rawQuery(rawSelection, null);
 	}
 	public int numEntries(){
