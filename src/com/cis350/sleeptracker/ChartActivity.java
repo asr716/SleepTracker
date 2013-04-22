@@ -19,6 +19,7 @@ import android.graphics.Paint.Align;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TabHost;
+import android.widget.TabWidget;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -69,6 +70,7 @@ public class ChartActivity extends Activity{
 	protected void onResume() {
 		super.onResume();
         TabHost tabs = (TabHost)findViewById(R.id.tabHost);
+        tabs.setBackgroundColor(getResources().getColor(R.color.background_color_awake));
         tabs.setup();
 
         if (wChart == null) {
@@ -116,28 +118,54 @@ public class ChartActivity extends Activity{
 			}
         });
         tabs.addTab(spec3);
+        setTabColor(tabs);
     }
+	public void setTabColor(TabHost tabhost) {
+		TextView tv;
+        for(int i=0;i<tabhost.getTabWidget().getChildCount();i++){
+            tv = (TextView) tabhost.getTabWidget().getChildAt(i).findViewById(android.R.id.title); //unselected
+            if (tv != null)
+            	tv.setTextColor(getResources().getColor(R.color.off_white));
+        }
+        tv = (TextView) tabhost.getTabWidget().getChildAt(tabhost.getCurrentTab()).findViewById(android.R.id.title);
+        if (tv != null)
+        	tv.setTextColor(getResources().getColor(R.color.off_white));
+	}
 	
-	
+	private View createExcusesTable(){
+		TableLayout excusesTable = new TableLayout(this);
+		double avgTimeSlept, avgRating;
+		String[] excuses = SleepLogHelper.EXCUSES;
+		for (int i=0; i<excuses.length; i++){
+			Cursor timeSleptCursor = mSleepLogHelper.queryLogExcusesTime(excuses[i]);
+			avgTimeSlept = timeSleptCursor.getLong(0)/HOUR_IN_MILLISECONDS;
+			Cursor qualityCursor = mSleepLogHelper.queryLogExcusesQuality(excuses[i]);
+			avgRating = qualityCursor.getLong(0)/HOUR_IN_MILLISECONDS;
+			
+			TextView tv = new TextView(this);
+			TableRow tr = new TableRow(this);
+		}
+		return excusesTable;
+	}
 	private void initChart(XYMultipleSeriesRenderer renderer, int numEntries, String title, boolean ifYear) {
-		renderer.setMarginsColor(Color.BLUE);
+		renderer.setMarginsColor(getResources().getColor(R.color.background_color_awake));
 		renderer.setXTitle(title); 
 		renderer.setYTitle("Hours");
         renderer.setLegendTextSize(24);
         renderer.setZoomRate(0.2f); 
         renderer.setZoomEnabled(false, false); 
+        renderer.setPanEnabled(false, false);
         renderer.setBarSpacing(0.3f); 
         renderer.setYAxisMin(0);
         renderer.setYAxisMax(24);
         renderer.setAxisTitleTextSize(50); 
-        renderer.setAxesColor(Color.BLACK); 
+        renderer.setAxesColor(getResources().getColor(R.color.off_white)); 
         renderer.setGridColor(Color.GRAY); 
         renderer.setShowGridX(true);
-        renderer.setLabelsColor(Color.BLACK); 
         renderer.setLabelsTextSize(20);
-        renderer.setXLabelsColor(Color.BLACK); 
+        renderer.setXLabelsColor(getResources().getColor(R.color.off_white)); 
         renderer.setYLabelsAlign(Align.RIGHT);
-        renderer.setYLabelsColor(0, Color.BLACK);
+        renderer.setYLabelsColor(0, getResources().getColor(R.color.off_white));
         
         renderer.setXAxisMin(0); 
         renderer.setXAxisMax(numEntries + 1);
@@ -154,7 +182,7 @@ public class ChartActivity extends Activity{
         }
         
         nightTimeRenderer = new XYSeriesRenderer();
-        nightTimeRenderer.setColor(Color.rgb(130, 130, 230));
+        nightTimeRenderer.setColor(getResources().getColor(R.color.off_white));
         nightTimeRenderer.setFillPoints(true);
         nightTimeRenderer.setLineWidth(2);
         nightTimeRenderer.setChartValuesTextAlign(Align.CENTER);
