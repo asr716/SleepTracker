@@ -19,6 +19,9 @@ import android.graphics.Paint.Align;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TabHost;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 
 public class ChartActivity extends Activity{
@@ -38,7 +41,7 @@ public class ChartActivity extends Activity{
     private XYMultipleSeriesRenderer wRenderer = new XYMultipleSeriesRenderer();
     private XYMultipleSeriesRenderer yRenderer = new XYMultipleSeriesRenderer();
     private XYSeries mTotalSleepSeries, mNapSeries, wTotalSleepSeries, wNapSeries, yTotalSleepSeries;
-    private XYSeriesRenderer totalRenderer, napRenderer;
+    private XYSeriesRenderer totalRenderer, nightTimeRenderer;
     
     private SleepLogHelper mSleepLogHelper;
 
@@ -67,13 +70,13 @@ public class ChartActivity extends Activity{
 		super.onResume();
         TabHost tabs = (TabHost)findViewById(R.id.tabHost);
         tabs.setup();
-        
+
         if (wChart == null) {
-            addData(WEEK, wNapSeries, wTotalSleepSeries, wDataset);
+        	addData(WEEK, wNapSeries, wTotalSleepSeries, wDataset);
             wChart = ChartFactory.getBarChartView(ChartActivity.this, wDataset, wRenderer, Type.STACKED);
         } else 
         	wChart.repaint();
-   
+        
         if (mChart == null){
         	addData(MONTH, mNapSeries, mTotalSleepSeries, mDataset);
         	mChart = ChartFactory.getBarChartView(ChartActivity.this, mDataset, mRenderer, Type.STACKED);
@@ -83,7 +86,6 @@ public class ChartActivity extends Activity{
         if (yChart == null){
         	addYearlyData(yTotalSleepSeries, yDataset);
         	yChart = ChartFactory.getBarChartView(ChartActivity.this, yDataset, yRenderer, Type.STACKED);
-	          
         } else
         	yChart.repaint();
         
@@ -116,6 +118,7 @@ public class ChartActivity extends Activity{
         tabs.addTab(spec3);
     }
 	
+	
 	private void initChart(XYMultipleSeriesRenderer renderer, int numEntries, String title, boolean ifYear) {
 		renderer.setMarginsColor(Color.BLUE);
 		renderer.setXTitle(title); 
@@ -139,24 +142,25 @@ public class ChartActivity extends Activity{
         renderer.setXAxisMin(0); 
         renderer.setXAxisMax(numEntries + 1);
         
-        totalRenderer = new XYSeriesRenderer();
-        totalRenderer.setColor(Color.rgb(220, 80, 80));
-        totalRenderer.setFillPoints(true);
-        totalRenderer.setLineWidth(2);
-        totalRenderer.setChartValuesTextAlign(Align.CENTER);
-        totalRenderer.setChartValuesTextSize(18);
-        totalRenderer.setDisplayChartValues(true);
         if (!ifYear) {
-	        napRenderer = new XYSeriesRenderer();
-	        napRenderer.setColor(Color.rgb(130, 130, 230));
-	        napRenderer.setFillPoints(true);
-	        napRenderer.setLineWidth(2);
-	        napRenderer.setChartValuesTextAlign(Align.CENTER);
-	        napRenderer.setChartValuesTextSize(18);
-	        napRenderer.setDisplayChartValues(true);
-	        renderer.addSeriesRenderer(napRenderer);
-        } 
-        renderer.addSeriesRenderer(totalRenderer);
+	        totalRenderer = new XYSeriesRenderer();
+	        totalRenderer.setColor(Color.rgb(220, 80, 80));
+	        totalRenderer.setFillPoints(true);
+	        totalRenderer.setLineWidth(2);
+	        totalRenderer.setChartValuesTextAlign(Align.CENTER);
+	        totalRenderer.setChartValuesTextSize(18);
+	        totalRenderer.setDisplayChartValues(true);
+	        renderer.addSeriesRenderer(totalRenderer);
+        }
+        
+        nightTimeRenderer = new XYSeriesRenderer();
+        nightTimeRenderer.setColor(Color.rgb(130, 130, 230));
+        nightTimeRenderer.setFillPoints(true);
+        nightTimeRenderer.setLineWidth(2);
+        nightTimeRenderer.setChartValuesTextAlign(Align.CENTER);
+        nightTimeRenderer.setChartValuesTextSize(18);
+        nightTimeRenderer.setDisplayChartValues(true);
+        renderer.addSeriesRenderer(nightTimeRenderer);
         
     }
 	
@@ -204,19 +208,23 @@ public class ChartActivity extends Activity{
 		}
     }
 	private void addYearlyData(XYSeries total, XYMultipleSeriesDataset dataset){
-		total = new XYSeries("Total Sleep");
+		total = new XYSeries("Nighttime Sleep");
+		dataset.addSeries(total);
+		DecimalFormat df = new DecimalFormat("0.00");
 		long startMonth = thisMonth - 12 * MONTH_IN_MILLISECONDS;
 		long endMonth = thisMonth - 11 * MONTH_IN_MILLISECONDS;
-		Cursor cursor = mSleepLogHelper.queryLogAvgMonth(startMonth, endMonth);
 		for (int i=1; i<13; i++){
-			if (cursor != null){
-				cursor.moveToFirst();
-				total.add(i, cursor.getLong(0));
+			Cursor cursor = mSleepLogHelper.queryLogAvgMonth(startMonth, endMonth);
+			if (cursor.moveToFirst()){
+				double temp = cursor.getLong(0);
+				temp = temp/HOUR_IN_MILLISECONDS;
+				String formate = df.format(temp);
+				double finalValue = Double.parseDouble(formate);
+				total.add(i, finalValue);
 			}
 			startMonth = startMonth + MONTH_IN_MILLISECONDS;
 			endMonth = endMonth + MONTH_IN_MILLISECONDS;
 		}
-		dataset.addSeries(total);
 	}
 	
 	public XYSeries getTotalSeries() {
