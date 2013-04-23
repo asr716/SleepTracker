@@ -165,7 +165,7 @@ public class SleepLogHelper {
 		return mDb.rawQuery(rawSelection, null);
 	}
 	public Cursor queryLogExcusesQuality(String excuse){
-		String rawSelection = "SELECT AVG(" + RATING + ") FROM " + TABLE_NAME + " WHERE " + excuse + ">0";
+		String rawSelection = "SELECT AVG(" + RATING + "*1.0) FROM " + TABLE_NAME + " WHERE " + excuse + "=1";
 		return mDb.rawQuery(rawSelection, null);
 	}
 	public int numEntries(){
