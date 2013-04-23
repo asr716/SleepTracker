@@ -36,7 +36,9 @@
             android:name="com.cis350.sleeptracker.ModifyTimeActivity"
             android:theme="@android:style/Theme.Dialog" />
         <activity
-            android:name="com.cis350.sleeptracker.ChartActivity" />
+            android:name="com.cis350.sleeptracker.ChartActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
