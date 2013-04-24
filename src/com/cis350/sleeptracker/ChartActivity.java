@@ -59,18 +59,9 @@ public class ChartActivity extends Activity{
 		setContentView(R.layout.activity_chart);
 		MainActivity.customizeActionBar(this);
 		mSleepLogHelper = new SleepLogHelper(this);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_chart, menu);
-		return true;
-	}
-	
-	protected void onResume() {
-		super.onResume();
-        TabHost tabs = (TabHost)findViewById(R.id.tabHost);
+		
+		
+		TabHost tabs = (TabHost)findViewById(R.id.tabHost);
         tabs.setBackgroundColor(getResources().getColor(R.color.background_color_awake));
         tabs.setup();
 
@@ -129,6 +120,18 @@ public class ChartActivity extends Activity{
         });
         tabs.addTab(spec4);
         setTabColor(tabs);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.activity_chart, menu);
+		return true;
+	}
+	
+	protected void onResume() {
+		super.onResume();
+        
     }
 	public void setTabColor(TabHost tabhost) {
 		TextView tv;
