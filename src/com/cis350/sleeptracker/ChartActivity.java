@@ -209,7 +209,7 @@ public class ChartActivity extends Activity{
 			
 			Cursor timeSleptCursor = mSleepLogHelper.queryLogExcusesTime(excuses[i]);
 			if (timeSleptCursor.moveToFirst()) {
-				avgTimeSlept = timeSleptCursor.getLong(0)/HOUR_IN_MILLISECONDS;
+				avgTimeSlept = timeSleptCursor.getFloat(0)/HOUR_IN_MILLISECONDS;
 				formate = df.format(avgTimeSlept);
 				if (Math.abs(avgTimeSlept) < .0001) {
 					formate = "N/A";
