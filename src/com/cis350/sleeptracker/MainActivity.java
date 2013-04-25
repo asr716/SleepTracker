@@ -67,29 +67,22 @@ public class MainActivity extends Activity {
 	 * Otherwise, the tip at the saved position of the array should be returned.
 	 */
 	private String getTip(String[] tips) {
-		SharedPreferences.Editor editor = mPreferences.edit();
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTimeInMillis(System.currentTimeMillis());
 		int date = cal.get(Calendar.DAY_OF_MONTH);
 		int lastDate = mPreferences.getInt(LAST_LAUNCH, -1);
 		int position = mPreferences.getInt(TIP_POSITION, -1);
-		if (lastDate == -1) {
-			editor.putInt(LAST_LAUNCH, date);
-			editor.putInt(TIP_POSITION, 0);
-			editor.commit();
-			return tips[0];
-		} else if (date != lastDate) {
-			int newPosition = ++position;
-			if (newPosition >= tips.length) {
-				newPosition = 0;
+		if (date != lastDate) {
+			position += 1;
+			if (position >= tips.length) {
+				position = 0;
 			}
+			SharedPreferences.Editor editor = mPreferences.edit();
 			editor.putInt(LAST_LAUNCH, date);
-			editor.putInt(TIP_POSITION, newPosition);
+			editor.putInt(TIP_POSITION, position);
 			editor.commit();
-			return tips[newPosition];
-		} else {
-			return tips[position];
 		}
+		return tips[position];
 	}
 	
 	/*
