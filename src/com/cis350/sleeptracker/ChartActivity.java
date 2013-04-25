@@ -13,6 +13,7 @@ import org.achartengine.renderer.XYSeriesRenderer;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Paint.Align;
@@ -49,10 +50,12 @@ public class ChartActivity extends Activity{
     private XYSeries mTotalSleepSeries, mNapSeries, wTotalSleepSeries, wNapSeries, yTotalSleepSeries;
     private XYSeriesRenderer totalRenderer, nightTimeRenderer;
     
+    private SharedPreferences mPreferences;
     private SleepLogHelper mSleepLogHelper;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		mPreferences = getSharedPreferences(MainActivity.MAIN, MODE_PRIVATE);
 		initChart(mRenderer, MONTH, "Days", false);
 		initChart(wRenderer, WEEK, "Days", false);
 		initChart(yRenderer, YEAR, "Months", true);
@@ -75,7 +78,11 @@ public class ChartActivity extends Activity{
 	protected void onResume() {
 		super.onResume();
         TabHost tabs = (TabHost)findViewById(R.id.tabHost);
-        tabs.setBackgroundColor(getResources().getColor(R.color.background_color_awake));
+        if (!mPreferences.getBoolean(MainActivity.IS_ASLEEP, false)) {
+        	tabs.setBackgroundColor(getResources().getColor(R.color.background_color_awake));
+        } else {
+        	tabs.setBackgroundColor(getResources().getColor(R.color.background_color));
+        }
         tabs.setup();
 
         if (wChart == null) {
@@ -231,7 +238,11 @@ public class ChartActivity extends Activity{
 		return excusesTable;
 	}
 	private void initChart(XYMultipleSeriesRenderer renderer, int numEntries, String title, boolean ifYear) {
-		renderer.setMarginsColor(getResources().getColor(R.color.background_color_awake));
+		if (!mPreferences.getBoolean(MainActivity.IS_ASLEEP, false)) {
+			renderer.setMarginsColor(getResources().getColor(R.color.background_color_awake));
+		} else {
+			renderer.setMarginsColor(getResources().getColor(R.color.background_color));
+		}
 		renderer.setMargins(new int[] {30, 60, 90, 30});
 		renderer.setXTitle(title); 
 		renderer.setYTitle("Hours");
