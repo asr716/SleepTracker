@@ -342,6 +342,7 @@ public class ChartActivity extends Activity{
 		long startMonth = thisMonth - 12 * MONTH_IN_MILLISECONDS;
 		long endMonth = thisMonth - 11 * MONTH_IN_MILLISECONDS;
 		for (int i=1; i<13; i++){
+			Cursor count = mSleepLogHelper.queryLogDay(startMonth, endMonth);
 			Cursor cursor = mSleepLogHelper.queryLogAvgMonth(startMonth, endMonth);
 			if (cursor.moveToFirst()){
 				double temp = cursor.getLong(0);
