@@ -66,30 +66,17 @@ public class ChartActivity extends Activity{
 		setContentView(R.layout.activity_chart);
 		MainActivity.customizeActionBar(this);
 		mSleepLogHelper = new SleepLogHelper(this);
-<<<<<<< HEAD
+
 		
 		
 		TabHost tabs = (TabHost)findViewById(R.id.tabHost);
         tabs.setBackgroundColor(getResources().getColor(R.color.background_color_awake));
-=======
-	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_chart, menu);
-		return true;
-	}
-	
-	protected void onResume() {
-		super.onResume();
-        TabHost tabs = (TabHost)findViewById(R.id.tabHost);
         if (!mPreferences.getBoolean(MainActivity.IS_ASLEEP, false)) {
         	tabs.setBackgroundColor(getResources().getColor(R.color.background_color_awake));
         } else {
         	tabs.setBackgroundColor(getResources().getColor(R.color.background_color));
         }
->>>>>>> d5656420222167d7ae005193fb770e99228e7ff7
         tabs.setup();
 
         if (wChart == null) {
@@ -149,7 +136,6 @@ public class ChartActivity extends Activity{
         setTabColor(tabs);
 	}
 
-	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_chart, menu);
