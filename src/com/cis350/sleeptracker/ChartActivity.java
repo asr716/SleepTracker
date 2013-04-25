@@ -13,14 +13,16 @@ import org.achartengine.renderer.XYSeriesRenderer;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Paint.Align;
+import android.graphics.Typeface;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.TabHost;
-import android.widget.TabWidget;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -34,6 +36,9 @@ public class ChartActivity extends Activity{
 	private static final int MONTH = 30;
 	private static final int YEAR = 12;
 
+	private static final String[] EXCUSE_STRINGS = {"CAFFEINE", "ALCOHOL", "NICOTINE", "SUGAR",
+		"SCREEN TIME", "EXERCISE"};
+	
 	private long today, thisMonth;
 	private GraphicalView wChart, mChart, yChart;
     private XYMultipleSeriesDataset mDataset = new XYMultipleSeriesDataset();
@@ -45,10 +50,12 @@ public class ChartActivity extends Activity{
     private XYSeries mTotalSleepSeries, mNapSeries, wTotalSleepSeries, wNapSeries, yTotalSleepSeries;
     private XYSeriesRenderer totalRenderer, nightTimeRenderer;
     
+    private SharedPreferences mPreferences;
     private SleepLogHelper mSleepLogHelper;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		mPreferences = getSharedPreferences(MainActivity.MAIN, MODE_PRIVATE);
 		initChart(mRenderer, MONTH, "Days", false);
 		initChart(wRenderer, WEEK, "Days", false);
 		initChart(yRenderer, YEAR, "Months", true);
@@ -59,10 +66,30 @@ public class ChartActivity extends Activity{
 		setContentView(R.layout.activity_chart);
 		MainActivity.customizeActionBar(this);
 		mSleepLogHelper = new SleepLogHelper(this);
+<<<<<<< HEAD
 		
 		
 		TabHost tabs = (TabHost)findViewById(R.id.tabHost);
         tabs.setBackgroundColor(getResources().getColor(R.color.background_color_awake));
+=======
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.activity_chart, menu);
+		return true;
+	}
+	
+	protected void onResume() {
+		super.onResume();
+        TabHost tabs = (TabHost)findViewById(R.id.tabHost);
+        if (!mPreferences.getBoolean(MainActivity.IS_ASLEEP, false)) {
+        	tabs.setBackgroundColor(getResources().getColor(R.color.background_color_awake));
+        } else {
+        	tabs.setBackgroundColor(getResources().getColor(R.color.background_color));
+        }
+>>>>>>> d5656420222167d7ae005193fb770e99228e7ff7
         tabs.setup();
 
         if (wChart == null) {
@@ -85,7 +112,7 @@ public class ChartActivity extends Activity{
         
         tabs.clearAllTabs();
         TabHost.TabSpec spec1 = tabs.newTabSpec("weekly");
-        spec1.setIndicator("Weekly");
+        spec1.setIndicator("Week");
         spec1.setContent(new TabHost.TabContentFactory(){
 			public View createTabContent(String tag) {
 				return wChart;
@@ -94,7 +121,7 @@ public class ChartActivity extends Activity{
         tabs.addTab(spec1);
         
         TabHost.TabSpec spec2 = tabs.newTabSpec("monthly");
-        spec2.setIndicator("Monthly");
+        spec2.setIndicator("Month");
         spec2.setContent(new TabHost.TabContentFactory(){
 			public View createTabContent(String tag) {
 				return mChart;
@@ -103,7 +130,7 @@ public class ChartActivity extends Activity{
         tabs.addTab(spec2); 
         
         TabHost.TabSpec spec3 = tabs.newTabSpec("yearly");
-        spec3.setIndicator("Yearly");
+        spec3.setIndicator("Year");
         spec3.setContent(new TabHost.TabContentFactory(){
 			public View createTabContent(String tag) {
 				return yChart;
@@ -112,7 +139,7 @@ public class ChartActivity extends Activity{
         tabs.addTab(spec3);
         
         TabHost.TabSpec spec4 = tabs.newTabSpec("excuses");
-        spec4.setIndicator("Excuses");
+        spec4.setIndicator("Excuse Data");
         spec4.setContent(new TabHost.TabContentFactory(){
 			public View createTabContent(String tag) {
 				return createExcusesTable();
@@ -147,26 +174,37 @@ public class ChartActivity extends Activity{
 	
 	private View createExcusesTable(){
 		TableLayout excusesTable = new TableLayout(this);
+		TableLayout.LayoutParams tableLayoutParams =
+				new TableLayout.LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT, 1.0f);
+		excusesTable.setLayoutParams(tableLayoutParams);
+		excusesTable.setStretchAllColumns(true);
 		TableRow columnLabels = new TableRow(this);
+		TableRow.LayoutParams rowLayoutParams =
+				new TableRow.LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT, 1.0f);
+		columnLabels.setLayoutParams(rowLayoutParams);
+		columnLabels.setGravity(Gravity.CENTER);
 		
 		TextView excuseLabel = new TextView(this);
 		excuseLabel.setTextColor(getResources().getColor(R.color.off_white));
-		excuseLabel.setTextSize(12);
+		excuseLabel.setTypeface(null, Typeface.BOLD_ITALIC);
+		excuseLabel.setGravity(Gravity.CENTER);
 		TextView avgTimeLabel = new TextView(this);
 		avgTimeLabel.setTextColor(getResources().getColor(R.color.off_white));
-		avgTimeLabel.setTextSize(12);
+		avgTimeLabel.setTypeface(null, Typeface.BOLD_ITALIC);
+		avgTimeLabel.setGravity(Gravity.CENTER);
 		TextView avgQtyLabel = new TextView(this);
 		avgQtyLabel.setTextColor(getResources().getColor(R.color.off_white));
-		avgQtyLabel.setTextSize(12);
+		avgQtyLabel.setTypeface(null, Typeface.BOLD_ITALIC);
+		avgQtyLabel.setGravity(Gravity.CENTER);
 		
-		excuseLabel.setText("Excuse");
-		avgTimeLabel.setText("Avg hours slept");
-		avgQtyLabel.setText("Avg sleep quality");
+		excuseLabel.setText("");
+		avgTimeLabel.setText("HOURS SLEPT");
+		avgQtyLabel.setText("SLEEP QUALITY");
 		columnLabels.addView(excuseLabel);
 		columnLabels.addView(avgTimeLabel);
 		columnLabels.addView(avgQtyLabel);
 		
-		excusesTable.addView(columnLabels);
+		excusesTable.addView(columnLabels, tableLayoutParams);
 		
 		DecimalFormat df = new DecimalFormat("0.00");
 		double avgTimeSlept, avgQuality;
@@ -174,19 +212,26 @@ public class ChartActivity extends Activity{
 		String formate = "";
 		for (int i=0; i<excuses.length; i++){
 			TableRow tr = new TableRow(this);
-			tr.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
+			tr.setLayoutParams(rowLayoutParams);
+			tr.setGravity(Gravity.CENTER);
 			TextView excuse = new TextView(this);
 			excuse.setTextColor(getResources().getColor(R.color.off_white));
-			excuse.setText(excuses[i]);
+			excuse.setText(EXCUSE_STRINGS[i]);
+			excuse.setTypeface(null, Typeface.BOLD_ITALIC);
+			excuse.setGravity(Gravity.CENTER);
 			tr.addView(excuse);
 			
 			Cursor timeSleptCursor = mSleepLogHelper.queryLogExcusesTime(excuses[i]);
 			if (timeSleptCursor.moveToFirst()) {
 				avgTimeSlept = timeSleptCursor.getLong(0)/HOUR_IN_MILLISECONDS;
 				formate = df.format(avgTimeSlept);
+				if (Math.abs(avgTimeSlept) < .0001) {
+					formate = "N/A";
+				}
 				TextView avgTime = new TextView(this);
 				avgTime.setTextColor(getResources().getColor(R.color.off_white));
 				avgTime.setText(formate);
+				avgTime.setGravity(Gravity.CENTER);
 				tr.addView(avgTime);
 			}
 			
@@ -194,12 +239,16 @@ public class ChartActivity extends Activity{
 			if (qualityCursor.moveToFirst()) {
 				avgQuality = qualityCursor.getFloat(0);
 				formate = df.format(avgQuality);
+				if (Math.abs(avgQuality) < .0001) {
+					formate = "N/A";
+				}
 				TextView avgQual = new TextView(this);
 				avgQual.setTextColor(getResources().getColor(R.color.off_white));
 				avgQual.setText(formate);
+				avgQual.setGravity(Gravity.CENTER);
 				tr.addView(avgQual);
 			}
-			excusesTable.addView(tr);
+			excusesTable.addView(tr, tableLayoutParams);
 			
 			
 			
@@ -208,7 +257,11 @@ public class ChartActivity extends Activity{
 		return excusesTable;
 	}
 	private void initChart(XYMultipleSeriesRenderer renderer, int numEntries, String title, boolean ifYear) {
-		renderer.setMarginsColor(getResources().getColor(R.color.background_color_awake));
+		if (!mPreferences.getBoolean(MainActivity.IS_ASLEEP, false)) {
+			renderer.setMarginsColor(getResources().getColor(R.color.background_color_awake));
+		} else {
+			renderer.setMarginsColor(getResources().getColor(R.color.background_color));
+		}
 		renderer.setMargins(new int[] {30, 60, 90, 30});
 		renderer.setXTitle(title); 
 		renderer.setYTitle("Hours");
