@@ -161,7 +161,7 @@ public class SleepLogHelper {
 	}
 	
 	public Cursor queryLogExcusesTime(String excuse){
-		String rawSelection = "SELECT AVG(" + TIME_SLEPT + ") FROM " + TABLE_NAME + " WHERE " + excuse + ">0 AND " + NAP + "=0";
+		String rawSelection = "SELECT AVG(" + TIME_SLEPT + "*1.0) FROM " + TABLE_NAME + " WHERE " + excuse + ">0 AND " + NAP + "=0";
 		return mDb.rawQuery(rawSelection, null);
 	}
 	public Cursor queryLogExcusesQuality(String excuse){
