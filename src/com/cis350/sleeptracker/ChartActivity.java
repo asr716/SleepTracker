@@ -47,7 +47,13 @@ public class ChartActivity extends Activity{
     private XYMultipleSeriesRenderer mRenderer = new XYMultipleSeriesRenderer();
     private XYMultipleSeriesRenderer wRenderer = new XYMultipleSeriesRenderer();
     private XYMultipleSeriesRenderer yRenderer = new XYMultipleSeriesRenderer();
-    private XYSeries mTotalSleepSeries, mNapSeries, wTotalSleepSeries, wNapSeries, yTotalSleepSeries;
+    
+    private XYSeries mTotalSleepSeries = new XYSeries("Total Sleep");
+    private XYSeries mNapSeries = new XYSeries("Nightime Sleep");
+    private XYSeries wTotalSleepSeries = new XYSeries("Total Sleep");
+    private XYSeries wNapSeries = new XYSeries("Nightime Sleep");
+    private XYSeries yTotalSleepSeries = new XYSeries("Total Sleep");
+    
     private XYSeriesRenderer totalRenderer, nightTimeRenderer;
     
     private SharedPreferences mPreferences;
@@ -295,8 +301,6 @@ public class ChartActivity extends Activity{
 	private void addData(int numOfPoints, XYSeries nap, XYSeries total, XYMultipleSeriesDataset dataset) {
 	/*	Adds data starting yesterday
 	 */
-		total = new XYSeries("Total Sleep");
-	    nap = new XYSeries("Nightime Sleep");
 	    dataset.addSeries(total);
 	    dataset.addSeries(nap);
 		DecimalFormat df = new DecimalFormat("0.00");
@@ -336,7 +340,6 @@ public class ChartActivity extends Activity{
 		}
     }
 	private void addYearlyData(XYSeries total, XYMultipleSeriesDataset dataset){
-		total = new XYSeries("Nighttime Sleep");
 		dataset.addSeries(total);
 		DecimalFormat df = new DecimalFormat("0.00");
 		long startMonth = thisMonth - 12 * MONTH_IN_MILLISECONDS;
