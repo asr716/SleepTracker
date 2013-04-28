@@ -30,14 +30,14 @@ public final class R {
         public static final int comment_box=0x7f090013;
         public static final int data_list=0x7f090001;
         public static final int date_picker=0x7f090019;
-        public static final int excuse=0x7f09001c;
+        public static final int excuse=0x7f09001d;
         public static final int excuse1=0x7f090007;
         public static final int excuse2=0x7f090009;
         public static final int excuse3=0x7f09000b;
         public static final int excuse4=0x7f09000d;
         public static final int excuse5=0x7f09000f;
         public static final int excuse6=0x7f090011;
-        public static final int excuse_checkbox=0x7f09001b;
+        public static final int excuse_checkbox=0x7f09001c;
         public static final int excuse_checkbox1=0x7f090008;
         public static final int excuse_checkbox2=0x7f09000a;
         public static final int excuse_checkbox3=0x7f09000c;
@@ -46,16 +46,17 @@ public final class R {
         public static final int excuse_checkbox6=0x7f090012;
         public static final int linear_layout=0x7f090002;
         public static final int main_linear_layout=0x7f090014;
-        public static final int menu_settings=0x7f09001e;
+        public static final int menu_settings=0x7f09001f;
         public static final int rating_bar=0x7f090006;
+        public static final int save_button=0x7f09001a;
         public static final int sleep_wake_button=0x7f090016;
         public static final int status=0x7f090015;
         public static final int tabHost=0x7f090000;
         public static final int time_picker=0x7f090018;
         public static final int tip=0x7f090017;
-        public static final int title=0x7f09001d;
+        public static final int title=0x7f09001e;
         public static final int total_sleep=0x7f090003;
-        public static final int type_of_sleep=0x7f09001a;
+        public static final int type_of_sleep=0x7f09001b;
     }
     public static final class layout {
         public static final int activity_chart=0x7f030000;

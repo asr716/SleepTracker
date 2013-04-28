@@ -183,4 +183,8 @@ public class MainActivity extends Activity {
 		((TextView)v.findViewById(R.id.title)).setText("");
 		activity.getActionBar().setCustomView(v);
 	}
+	
+	public LinearLayout getLayout() {
+		return mMainLinearLayout;
+	}
 }

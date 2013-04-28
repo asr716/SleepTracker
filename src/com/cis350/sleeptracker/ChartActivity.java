@@ -146,6 +146,7 @@ public class ChartActivity extends Activity{
 		super.onResume();
         
     }
+	
 	public void setTabColor(TabHost tabhost) {
 		TextView tv;
         for(int i=0;i<tabhost.getTabWidget().getChildCount();i++){
@@ -242,6 +243,7 @@ public class ChartActivity extends Activity{
 		}
 		return excusesTable;
 	}
+	
 	private void initChart(XYMultipleSeriesRenderer renderer, int numEntries, String title, boolean ifYear) {
 		if (!mPreferences.getBoolean(MainActivity.IS_ASLEEP, false)) {
 			renderer.setMarginsColor(getResources().getColor(R.color.background_color_awake));
@@ -292,7 +294,7 @@ public class ChartActivity extends Activity{
         
     }
 	
-	private void addData(int numOfPoints, XYSeries nap, XYSeries total, XYMultipleSeriesDataset dataset) {
+	public void addData(int numOfPoints, XYSeries nap, XYSeries total, XYMultipleSeriesDataset dataset) {
 	/*	Adds data starting yesterday
 	 */
 		total = new XYSeries("Total Sleep");
@@ -335,14 +337,14 @@ public class ChartActivity extends Activity{
 			count++;
 		}
     }
-	private void addYearlyData(XYSeries total, XYMultipleSeriesDataset dataset){
+	
+	public void addYearlyData(XYSeries total, XYMultipleSeriesDataset dataset){
 		total = new XYSeries("Nighttime Sleep");
 		dataset.addSeries(total);
 		DecimalFormat df = new DecimalFormat("0.00");
 		long startMonth = thisMonth - 12 * MONTH_IN_MILLISECONDS;
 		long endMonth = thisMonth - 11 * MONTH_IN_MILLISECONDS;
 		for (int i=1; i<13; i++){
-			Cursor count = mSleepLogHelper.queryLogDay(startMonth, endMonth);
 			Cursor cursor = mSleepLogHelper.queryLogAvgMonth(startMonth, endMonth);
 			if (cursor.moveToFirst()){
 				double temp = cursor.getLong(0);

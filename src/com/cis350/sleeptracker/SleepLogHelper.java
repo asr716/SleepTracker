@@ -151,7 +151,7 @@ public class SleepLogHelper {
 	}
 	
 	public Cursor queryLogDay(long startDay, long endDay) {
-		String selection = ASLEEP_TIME + ">" + startDay + " AND " + ASLEEP_TIME + "<" + endDay;
+		String selection = ASLEEP_TIME + ">=" + startDay + " AND " + ASLEEP_TIME + "<" + endDay;
 		return mDb.query(TABLE_NAME, COLUMNS, selection, null, null, null, null);
 	}
 	
