@@ -30,7 +30,6 @@ public class MainActivity extends Activity {
 	private Button mSleepWakeButton;
 	private SleepLogHelper mSleepLogHelper;
 	private Context mContext;
-	
 	private static MediaPlayer mPodcastPlayer;
 
 	@Override
